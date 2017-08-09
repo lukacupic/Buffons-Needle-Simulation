@@ -8,7 +8,7 @@ public class Needle {
 
 	/**
 	 * Represents the percentage of the distance between
-	 * lines ({@link Canvas#distance} which will be used
+	 * lines ({@link Canvas} which will be used
 	 * as the length of the needle;
 	 */
 	public static double lengthFactor = 0.5;

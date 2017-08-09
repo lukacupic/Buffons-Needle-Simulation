@@ -1,3 +1,5 @@
+import components.Canvas;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
