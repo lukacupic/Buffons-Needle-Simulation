@@ -1,10 +1,9 @@
-import components.Canvas;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.util.Scanner;
 
 /**
  * A simple simulator of the Buffon's needle problem.
@@ -19,7 +18,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * The drawing canvas.
 	 */
-	private Canvas canvas;
+	private static Canvas canvas;
 
 	/**
 	 * A landed needle thrownCounter.
@@ -57,6 +56,19 @@ public class MainFrame extends JFrame {
 	 */
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(MainFrame::new);
+
+		Scanner sc = new Scanner(System.in);
+		while (sc.hasNextLine()) {
+			String str = sc.nextLine();
+
+			if ("pause".equals(str.toLowerCase())) {
+				canvas.pause();
+			} else if ("stop".equals(str.toLowerCase())) {
+				canvas.stop();
+			} else if ("start".equals(str.toLowerCase())) {
+				canvas.start();
+			}
+		}
 	}
 
 	/**
@@ -65,9 +77,9 @@ public class MainFrame extends JFrame {
 	private void initGUI() {
 		setLayout(new BorderLayout());
 
-		Canvas c = new Canvas();
-		add(c, BorderLayout.CENTER);
+		canvas = new Canvas();
+		add(canvas, BorderLayout.CENTER);
 
-		c.start();
+		canvas.start();
 	}
 }

@@ -3,6 +3,7 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,8 +85,11 @@ public class Canvas extends JComponent {
 	}
 
 	/**
-	 * Starts the animation.
+	 * Starts the animation. Starting an animation will reset
+	 * the drawing canvas, if called upon a non-empty canvas.
 	 */
+	// todo: don't dispose previous running thread; use a sync
+	// todo: mechanism to restore the old thread!
 	public void start() {
 		if (running) return;
 
@@ -104,14 +108,18 @@ public class Canvas extends JComponent {
 	}
 
 	/**
-	 * Pauses the animation.
+	 * Pauses the animation, causing no more needles to be
+	 * generated, until the {@link #start()} method is called
+	 * upon.
 	 */
 	public void pause() {
 		running = false;
 	}
 
 	/**
-	 * Stops the animation.
+	 * Stops the animation, completely stopping the animation
+	 * causing the deletion of any previous contents that were
+	 * on the drawing canvas.
 	 */
 	public void stop() {
 		clearImage();
@@ -174,6 +182,8 @@ public class Canvas extends JComponent {
 		g2d = image.createGraphics();
 		g2d.setBackground(backgroundColor);
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
+		// anti-aliasing
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	}
 
 	/**
