@@ -10,14 +10,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Canvas extends JComponent {
 
@@ -45,7 +41,7 @@ public class Canvas extends JComponent {
 	 * Animation delay in milliseconds - the time in between
 	 * each new needle is thrown onto the canvas.
 	 */
-	private static final int delay = 10;
+	private static int delay;
 
 	/**
 	 * A flag indicating whether the animation is currently running.
@@ -88,21 +84,6 @@ public class Canvas extends JComponent {
 	 */
 	private int needleLength;
 
-	/*
-	private Thread animator = new Thread(() -> {
-		while (true) {
-			try {
-				Canvas.this.repaint();
-				while (!running) {
-					lock.lock();
-				}
-				Thread.sleep(delay);
-			} catch (InterruptedException ignorable) {
-			}
-		}
-	});
-	*/
-
 	private Timer animator = new Timer(delay, e -> Canvas.this.repaint());
 
 
@@ -142,6 +123,24 @@ public class Canvas extends JComponent {
 		pause();
 		clearImage();
 		repaint();
+	}
+
+	/**
+	 * Sets the animation speed.
+	 * <p>
+	 * The slowest speed is 1000 milliseconds (equivalent to speed value
+	 * of 0.0) and the fastest speed (equivalent to 1.0) is the fastest
+	 * possible speed of the animation, but since it's entirely hardware
+	 * dependant, the exact speed cannot be specified in the documentation.
+	 *
+	 * @param speed the animation speed, from the interval [0.0, 1.0]
+	 */
+	public void setSpeed(double speed) {
+		if (speed < 0 || speed > 1.0) {
+			throw new IllegalArgumentException();
+		}
+		delay = (int) (1000 * Math.exp(-10 * speed));
+		animator.setDelay(delay);
 	}
 
 	@Override
