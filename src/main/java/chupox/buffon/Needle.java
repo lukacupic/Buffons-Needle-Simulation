@@ -1,3 +1,7 @@
+package chupox.buffon;
+
+import chupox.buffon.components.Canvas;
+
 import java.awt.Color;
 
 /**

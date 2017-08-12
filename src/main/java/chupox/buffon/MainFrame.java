@@ -1,3 +1,8 @@
+package chupox.buffon;
+
+import chupox.buffon.components.Canvas;
+import chupox.buffon.components.Controls;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
@@ -18,7 +23,12 @@ public class MainFrame extends JFrame {
 	/**
 	 * The drawing canvas.
 	 */
-	private static Canvas canvas;
+	private static Canvas canvas = new Canvas();
+
+	/**
+	 * The controls panel.
+	 */
+	private static Controls controls = new Controls();
 
 	/**
 	 * A landed needle thrownCounter.
@@ -56,19 +66,6 @@ public class MainFrame extends JFrame {
 	 */
 	public static void main(String args[]) {
 		SwingUtilities.invokeLater(MainFrame::new);
-
-		Scanner sc = new Scanner(System.in);
-		while (sc.hasNextLine()) {
-			String str = sc.nextLine();
-
-			if ("pause".equals(str.toLowerCase())) {
-				canvas.pause();
-			} else if ("stop".equals(str.toLowerCase())) {
-				canvas.stop();
-			} else if ("start".equals(str.toLowerCase())) {
-				canvas.start();
-			}
-		}
 	}
 
 	/**
@@ -77,9 +74,9 @@ public class MainFrame extends JFrame {
 	private void initGUI() {
 		setLayout(new BorderLayout());
 
-		canvas = new Canvas();
-		add(canvas, BorderLayout.CENTER);
+		controls.setCanvas(canvas);
 
-		canvas.start();
+		add(canvas, BorderLayout.CENTER);
+		add(controls, BorderLayout.LINE_END);
 	}
 }

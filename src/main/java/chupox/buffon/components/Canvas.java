@@ -1,13 +1,23 @@
+package chupox.buffon.components;
+
+import chupox.buffon.Needle;
+
 import javax.swing.JComponent;
+import javax.swing.Timer;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Canvas extends JComponent {
 
@@ -39,7 +49,7 @@ public class Canvas extends JComponent {
 
 	/**
 	 * A flag indicating whether the animation is currently running.
-	 * Is toggled through {@link #start()} and {@link #stop()} methods.
+	 * Is toggled through {@link #play()} and {@link #stop()} methods.
 	 */
 	private volatile boolean running = false;
 
@@ -78,6 +88,24 @@ public class Canvas extends JComponent {
 	 */
 	private int needleLength;
 
+	/*
+	private Thread animator = new Thread(() -> {
+		while (true) {
+			try {
+				Canvas.this.repaint();
+				while (!running) {
+					lock.lock();
+				}
+				Thread.sleep(delay);
+			} catch (InterruptedException ignorable) {
+			}
+		}
+	});
+	*/
+
+	private Timer animator = new Timer(delay, e -> Canvas.this.repaint());
+
+
 	/**
 	 * Creates a new drawing canvas.
 	 */
@@ -85,80 +113,73 @@ public class Canvas extends JComponent {
 	}
 
 	/**
-	 * Starts the animation. Starting an animation will reset
-	 * the drawing canvas, if called upon a non-empty canvas.
+	 * Plays the animation. If the animation is already playing,
+	 * invoking will have no effect; otherwise the animation will
+	 * either continue playing if previously paused or start a
+	 * new animation if previously stopped.
 	 */
-	// todo: don't dispose previous running thread; use a sync
-	// todo: mechanism to restore the old thread!
-	public void start() {
+	public void play() {
 		if (running) return;
-
-		new Thread(() -> {
-			while (running) {
-				repaint();
-
-				try {
-					Thread.sleep(delay);
-				} catch (InterruptedException ignorable) {
-				}
-			}
-		}).start();
-
+		animator.start();
 		running = true;
 	}
 
 	/**
 	 * Pauses the animation, causing no more needles to be
-	 * generated, until the {@link #start()} method is called
+	 * generated, until the {@link #play()} method is called
 	 * upon.
 	 */
 	public void pause() {
+		animator.stop();
 		running = false;
 	}
 
 	/**
-	 * Stops the animation, completely stopping the animation
-	 * causing the deletion of any previous contents that were
-	 * on the drawing canvas.
+	 * Stops the animation, causing the deletion of any previous
+	 * contents that were on the drawing canvas.
 	 */
 	public void stop() {
+		pause();
 		clearImage();
-		running = false;
+		repaint();
 	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (image == null) init();
 
-		// randomly choose a point on the plane
+		if (running) {
+			Needle needle = generateNeedle();
+			updateValues(needle);
+
+			Stroke temp = g2d.getStroke();
+			g2d.setStroke(new BasicStroke(1.8f));
+			g2d.setColor(needle.getColor());
+			g2d.drawLine(needle.getX1(), needle.getY1(), needle.getX2(), needle.getY2());
+			g2d.setStroke(temp);
+		}
+		g.drawImage(image, 0, 0, null);
+	}
+
+	private Needle generateNeedle() {
 		int x = Math.abs(rand.nextInt() % this.getWidth());
 		int y = Math.abs(rand.nextInt() % this.getHeight());
 
-		// randomly choose the angle of the needle
 		double angle = Math.abs(rand.nextInt() % (2 * Math.PI));
 
-		// calculate the x and y lengths to the points
 		double xLen = needleLength / 2 * Math.cos(angle);
 		double yLen = needleLength / 2 * Math.sin(angle);
 
-		// get the points to form a needle
 		int x1 = x - (int) xLen;
 		int y1 = y - (int) yLen;
 		int x2 = x + (int) xLen;
 		int y2 = y + (int) yLen;
 
-		int red = Math.abs(rand.nextInt()) % 256;
-		int green = Math.abs(rand.nextInt()) % 256;
-		int blue = Math.abs(rand.nextInt()) % 256;
+		int r = Math.abs(rand.nextInt()) % 256;
+		int g = Math.abs(rand.nextInt()) % 256;
+		int b = Math.abs(rand.nextInt()) % 256;
 
-		Needle needle = new Needle(x1, y1, x2, y2, new Color(red, green, blue));
-		updateValues(needle);
-
-		g2d.setStroke(new BasicStroke(1.8f));
-		g2d.setColor(needle.getColor());
-		g2d.drawLine(needle.getX1(), needle.getY1(), needle.getX2(), needle.getY2());
-
-		g.drawImage(image, 0, 0, null);
+		return new Needle(x1, y1, x2, y2, new Color(r, g, b));
 	}
 
 	/**
@@ -166,10 +187,11 @@ public class Canvas extends JComponent {
 	 */
 	private void init() {
 		image = new BufferedImage(this.getWidth(), this.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		clearImage();
+		g2d = image.createGraphics();
+		// anti-aliasing
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g2d.setColor(Color.BLACK);
-		drawLines(NUMBER_OF_LINES);
+		clearImage();
 
 		needleLength = (int) (Needle.lengthFactor * distance);
 	}
@@ -179,25 +201,11 @@ public class Canvas extends JComponent {
 	 * upon it and by restoring the default background color.
 	 */
 	private void clearImage() {
-		g2d = image.createGraphics();
 		g2d.setBackground(backgroundColor);
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
-		// anti-aliasing
-		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	}
 
-	/**
-	 * Updates the simulation values: {@link #countNeedles}, {@link #countLanded}
-	 * and {@link #pi}.
-	 *
-	 * @param needle the needle which was just thrown
-	 */
-	private void updateValues(Needle needle) {
-		countNeedles++;
-		if (landedOnLine(needle)) {
-			countLanded++;
-			pi = calculatePI();
-		}
+		g2d.setColor(Color.BLACK);
+		drawLines(NUMBER_OF_LINES);
 	}
 
 	/**
@@ -217,6 +225,20 @@ public class Canvas extends JComponent {
 
 			g2d.drawLine(currentDistance, 0, currentDistance, this.getHeight());
 			currentDistance += distance;
+		}
+	}
+
+	/**
+	 * Updates the simulation values: {@link #countNeedles}, {@link #countLanded}
+	 * and {@link #pi}.
+	 *
+	 * @param needle the needle which was just thrown
+	 */
+	private void updateValues(Needle needle) {
+		countNeedles++;
+		if (landedOnLine(needle)) {
+			countLanded++;
+			pi = calculatePI();
 		}
 	}
 
