@@ -14,7 +14,7 @@ public class Util {
 	 * @param c     the color
 	 * @return the specified image but with the changed color
 	 */
-	private static BufferedImage colorImage(BufferedImage image, Color c) {
+	public static BufferedImage colorImage(BufferedImage image, Color c) {
 		int width = image.getWidth();
 		int height = image.getHeight();
 		WritableRaster raster = image.getRaster();

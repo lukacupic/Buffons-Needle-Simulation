@@ -7,6 +7,7 @@
     <groupId>chupox.buffon</groupId>
     <artifactId>buffon-simulator</artifactId>
     <version>1.0</version>
+
     <build>
         <plugins>
             <plugin>
@@ -28,5 +29,15 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.showDeprecation>true</maven.compiler.showDeprecation>
     </properties>
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.imgscalr/imgscalr-lib -->
+        <dependency>
+            <groupId>org.imgscalr</groupId>
+            <artifactId>imgscalr-lib</artifactId>
+            <version>4.2</version>
+        </dependency>
+    </dependencies>
+
 
 </project>

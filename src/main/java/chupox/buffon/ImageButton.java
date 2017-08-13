@@ -21,12 +21,12 @@ public class ImageButton extends JButton {
 	/**
 	 * The default, empty border for each button.
 	 */
-	private static Border border = BorderFactory.createEmptyBorder();
+	private static Border border = BorderFactory.createEmptyBorder(1,1,1,1);
 
 	/**
 	 * The border for a hovered button.
 	 */
-	private static Border hoveredBorder = BorderFactory.createLineBorder(Color.BLACK);
+	private static Border hoveredBorder = BorderFactory.createLineBorder(Color.BLACK, 1, true);
 
 	/**
 	 * The icon for a default button.
@@ -94,6 +94,7 @@ public class ImageButton extends JButton {
 		this.selectedIcon = selectedIcon;
 		this.defaultTooltip = defaultTooltip;
 		this.selectedTooltip = selectedTooltip;
+		this.setFocusable(false);
 
 		init();
 	}

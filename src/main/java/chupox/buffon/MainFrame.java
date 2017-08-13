@@ -6,9 +6,9 @@ import chupox.buffon.components.Controls;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
-import java.util.Scanner;
 
 /**
  * A simple simulator of the Buffon's needle problem.
@@ -73,10 +73,23 @@ public class MainFrame extends JFrame {
 	 */
 	private void initGUI() {
 		setLayout(new BorderLayout());
+		try {
+			setLookAndFeel("Nimbus");
+		} catch (Exception ignorable) {
+		}
 
 		controls.setCanvas(canvas);
 
 		add(canvas, BorderLayout.CENTER);
 		add(controls, BorderLayout.LINE_END);
+	}
+
+	private void setLookAndFeel(String name) throws Exception {
+		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+			if (name.equals(info.getName())) {
+				UIManager.setLookAndFeel(info.getClassName());
+				break;
+			}
+		}
 	}
 }
