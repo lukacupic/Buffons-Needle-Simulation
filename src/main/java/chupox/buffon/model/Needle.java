@@ -1,6 +1,6 @@
 package chupox.buffon.model;
 
-import chupox.buffon.components.Canvas;
+import chupox.buffon.components.canvas.Canvas;
 
 import java.awt.Color;
 

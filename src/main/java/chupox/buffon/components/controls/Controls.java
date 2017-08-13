@@ -1,5 +1,7 @@
-package chupox.buffon.components;
+package chupox.buffon.components.controls;
 
+import chupox.buffon.components.canvas.Canvas;
+import chupox.buffon.components.controls.buttons.ImageButton;
 import chupox.buffon.util.Util;
 
 import javax.swing.ImageIcon;

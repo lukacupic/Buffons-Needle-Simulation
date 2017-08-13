@@ -1,5 +1,11 @@
-package chupox.buffon.components;
+package chupox.buffon.components.controls.buttons;
 
+/**
+ * Specifies the color of the button's icon.
+ * <p>
+ * Each of the colors represents a slightly different
+ * version of the same default color.
+ */
 public enum IconColors {
 
 	/**

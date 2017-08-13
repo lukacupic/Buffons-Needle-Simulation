@@ -1,7 +1,7 @@
 package chupox.buffon;
 
-import chupox.buffon.components.Canvas;
-import chupox.buffon.components.Controls;
+import chupox.buffon.components.canvas.Canvas;
+import chupox.buffon.components.controls.Controls;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;

@@ -1,4 +1,4 @@
-package chupox.buffon.components;
+package chupox.buffon.components.canvas;
 
 import chupox.buffon.model.Needle;
 

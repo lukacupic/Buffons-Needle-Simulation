@@ -1,5 +1,6 @@
-package chupox.buffon.components;
+package chupox.buffon.components.controls.buttons;
 
+import chupox.buffon.components.controls.Controls;
 import chupox.buffon.util.Util;
 
 import javax.swing.BorderFactory;
