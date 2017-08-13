@@ -174,6 +174,7 @@ public class Controls extends JPanel {
 	/**
 	 * Represents a swing button with an easier way of adding an icon to
 	 * the button.
+	 * <p>
 	 * Each button can be either "flippable" or "non-flippable". The former
 	 * means that the button contains two states, such as a "Play/Pause"
 	 * button. The latter refers to a regular button with a single purpose.
