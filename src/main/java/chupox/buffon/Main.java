@@ -13,7 +13,7 @@ import java.awt.BorderLayout;
 /**
  * A simple simulator of the Buffon's needle problem.
  */
-public class MainFrame extends JFrame {
+public class Main extends JFrame {
 
 	/**
 	 * Width and height of the main window.
@@ -48,7 +48,7 @@ public class MainFrame extends JFrame {
 	/**
 	 * The default constructor.
 	 */
-	public MainFrame() {
+	public Main() {
 		setSize(SIZE, SIZE);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -65,7 +65,7 @@ public class MainFrame extends JFrame {
 	 * @param args command line arguments; not used in this program
 	 */
 	public static void main(String args[]) {
-		SwingUtilities.invokeLater(MainFrame::new);
+		SwingUtilities.invokeLater(Main::new);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class MainFrame extends JFrame {
 	private void initGUI() {
 		setLayout(new BorderLayout());
 		try {
-			setLookAndFeel("Nimbus");
+			//setLookAndFeel("Nimbus");
 		} catch (Exception ignorable) {
 		}
 

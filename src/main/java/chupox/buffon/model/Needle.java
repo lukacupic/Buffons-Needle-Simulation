@@ -1,4 +1,4 @@
-package chupox.buffon;
+package chupox.buffon.model;
 
 import chupox.buffon.components.Canvas;
 
@@ -12,7 +12,7 @@ public class Needle {
 
 	/**
 	 * Represents the percentage of the distance between
-	 * lines ({@link Canvas} which will be used
+	 * the lines on the {@link Canvas} which will be used
 	 * as the length of the needle;
 	 */
 	public static double lengthFactor = 0.5;
@@ -43,7 +43,7 @@ public class Needle {
 	private Color color;
 
 	/**
-	 * Creates an a new needle instance.
+	 * Creates an a new needle.
 	 *
 	 * @param x1    x-coordinate of the first point
 	 * @param y1    y-coordinate of the first point

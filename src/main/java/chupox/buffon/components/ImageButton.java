@@ -1,4 +1,4 @@
-package chupox.buffon;
+package chupox.buffon.components;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;

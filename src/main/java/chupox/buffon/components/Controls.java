@@ -1,7 +1,6 @@
 package chupox.buffon.components;
 
-import chupox.buffon.ImageButton;
-import chupox.buffon.Util;
+import chupox.buffon.util.Util;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -255,11 +254,25 @@ public class Controls extends JPanel {
 	 * @throws IOException if an I/O error occurs
 	 */
 	private ImageIcon getIcon(String filename) throws IOException {
+		return getIcon(filename, DEFAULT_ICON_SIZE, DEFAULT_ICON_COLOR);
+	}
+
+	/**
+	 * Returns the icon, created from an image with the specified name,
+	 * and of specified size and color.
+	 *
+	 * @param filename the name of the icon
+	 * @param size     the size of the icon
+	 * @param color    the color of the icon
+	 * @return an {@link ImageIcon} of the image with the specified name
+	 * @throws IOException if an I/O error occurs
+	 */
+	private ImageIcon getIcon(String filename, int size, Color color) throws IOException {
 		BufferedImage im = loadImage(filename);
 		if (im == null) return null;
 
-		im = Util.colorImage(im, DEFAULT_ICON_COLOR);
-		return new ImageIcon(Scalr.resize(im, DEFAULT_ICON_SIZE));
+		im = Util.colorImage(im, color);
+		return new ImageIcon(Scalr.resize(im, size));
 	}
 
 	/**

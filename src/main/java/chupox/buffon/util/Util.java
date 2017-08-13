@@ -1,4 +1,4 @@
-package chupox.buffon;
+package chupox.buffon.util;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;

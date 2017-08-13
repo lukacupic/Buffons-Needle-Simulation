@@ -1,6 +1,6 @@
 package chupox.buffon.components;
 
-import chupox.buffon.Needle;
+import chupox.buffon.model.Needle;
 
 import javax.swing.JComponent;
 import javax.swing.Timer;
