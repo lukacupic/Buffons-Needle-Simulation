@@ -14,21 +14,19 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 
 public class Controls extends JPanel {
 
 	/**
 	 * The default size for the icons.
 	 */
-	private static final int DEFAULT_ICON_SIZE = 45;
+	public static final int DEFAULT_ICON_SIZE = 45;
 
 	/**
 	 * The default color for the icons.
 	 */
-	private static final Color DEFAULT_ICON_COLOR = new Color(40, 77, 135);
+	public static final Color DEFAULT_ICON_COLOR = new Color(40, 77, 135);
 
 	/**
 	 * The drawing canvas.
@@ -122,11 +120,9 @@ public class Controls extends JPanel {
 		ImageIcon playIcon = getIcon("icons/play.png");
 		ImageIcon pauseIcon = getIcon("icons/pause.png");
 
-		ImageButton playButton = new ImageButton(playIcon, pauseIcon, "Play", "Pause");
-		playButton.addActionListener(e -> {
-			if (!playButton.isDefault()) canvas.play();
-			else canvas.pause();
-		});
+		ImageButton playButton = new ImageButton(playIcon, pauseIcon, "Play", "Pause",
+				() -> canvas.play(), () -> canvas.pause()
+		);
 		return playButton;
 	}
 
@@ -139,8 +135,7 @@ public class Controls extends JPanel {
 	private ImageButton createStopButton() throws IOException {
 		ImageIcon stopIcon = getIcon("icons/stop.png");
 
-		ImageButton stopButton = new ImageButton(stopIcon, "Stop");
-		stopButton.addActionListener(e -> {
+		ImageButton stopButton = new ImageButton(stopIcon, "Stop", () -> {
 			canvas.stop();
 			if (!playButton.isDefault()) {
 				playButton.flip();
@@ -216,9 +211,8 @@ public class Controls extends JPanel {
 	private ImageButton createSettingsButton() throws IOException {
 		ImageIcon settingsIcon = getIcon("icons/settings.png");
 
-		settingsButton = new ImageButton(settingsIcon, "Settings");
-		stopButton.addActionListener(e -> {
-			// Show settings window
+		settingsButton = new ImageButton(settingsIcon, "Settings", () -> {
+			// show settings window
 		});
 		return settingsButton;
 	}

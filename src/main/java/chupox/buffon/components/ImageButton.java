@@ -1,12 +1,13 @@
 package chupox.buffon.components;
 
+import chupox.buffon.util.Util;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.border.Border;
-import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 /**
  * Represents a swing button with an easier way of adding an icon to
@@ -17,16 +18,6 @@ import java.awt.event.MouseEvent;
  * button. The latter refers to a regular button with a single purpose.
  */
 public class ImageButton extends JButton {
-
-	/**
-	 * The default, empty border for each button.
-	 */
-	private static Border border = BorderFactory.createEmptyBorder(1,1,1,1);
-
-	/**
-	 * The border for a hovered button.
-	 */
-	private static Border hoveredBorder = BorderFactory.createLineBorder(Color.BLACK, 1, true);
 
 	/**
 	 * The icon for a default button.
@@ -48,6 +39,10 @@ public class ImageButton extends JButton {
 	 */
 	private String selectedTooltip;
 
+	private Runnable defaultAction;
+
+	private Runnable selectedAction;
+
 	/**
 	 * A flag which tells the current state of the button. This field
 	 * is always true for a non-flippable button.
@@ -67,8 +62,8 @@ public class ImageButton extends JButton {
 	 * @param icon    the icon
 	 * @param tooltip the tooltip text
 	 */
-	public ImageButton(ImageIcon icon, String tooltip) {
-		this(icon, null, tooltip, null);
+	public ImageButton(ImageIcon icon, String tooltip, Runnable defaultAction) {
+		this(icon, null, tooltip, null, defaultAction, null);
 		isFlippable = false;
 	}
 
@@ -88,12 +83,14 @@ public class ImageButton extends JButton {
 	 * @param selectedTooltip selected tooltip text
 	 */
 	public ImageButton(ImageIcon defaultIcon, ImageIcon selectedIcon, String defaultTooltip,
-	                   String selectedTooltip) {
+	                   String selectedTooltip, Runnable defaultAction, Runnable selectedAction) {
 		super();
 		this.defaultIcon = defaultIcon;
 		this.selectedIcon = selectedIcon;
 		this.defaultTooltip = defaultTooltip;
 		this.selectedTooltip = selectedTooltip;
+		this.defaultAction = defaultAction;
+		this.selectedAction = selectedAction;
 		this.setFocusable(false);
 
 		init();
@@ -105,24 +102,29 @@ public class ImageButton extends JButton {
 	private void init() {
 		setIcon(defaultIcon);
 		setToolTipText(defaultTooltip);
-		setBorder(border);
+		setBorder(BorderFactory.createEmptyBorder());
 		setContentAreaFilled(false);
 
 		addMouseListener(new MouseAdapter() {
 			@Override
-			public void mousePressed(MouseEvent e) {
+			public void mouseReleased(MouseEvent e) {
+				if (isDefault) defaultAction.run();
+				else selectedAction.run();
+
 				if (!isFlippable) return;
 				flip();
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				setBorder(hoveredBorder);
+				BufferedImage im = (BufferedImage) ((ImageIcon) getIcon()).getImage();
+				setIcon(new ImageIcon(Util.colorImage(im, Controls.DEFAULT_ICON_COLOR.darker())));
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				setBorder(border);
+				BufferedImage im = (BufferedImage) ((ImageIcon) getIcon()).getImage();
+				setIcon(new ImageIcon(Util.colorImage(im, Controls.DEFAULT_ICON_COLOR)));
 			}
 		});
 	}
