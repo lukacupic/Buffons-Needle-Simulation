@@ -1,9 +1,7 @@
 package chupox.buffon.components;
 
 import chupox.buffon.util.Util;
-import org.imgscalr.Scalr;
 
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,10 +13,10 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
+import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class Controls extends JPanel {
 
@@ -31,11 +29,6 @@ public class Controls extends JPanel {
 	 * The default color for the icons.
 	 */
 	private static final Color DEFAULT_ICON_COLOR = new Color(40, 77, 135);
-
-	/**
-	 * The class loader for loading the image resources.
-	 */
-	private ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
 	/**
 	 * The drawing canvas.
@@ -254,39 +247,7 @@ public class Controls extends JPanel {
 	 * @throws IOException if an I/O error occurs
 	 */
 	private ImageIcon getIcon(String filename) throws IOException {
-		return getIcon(filename, DEFAULT_ICON_SIZE, DEFAULT_ICON_COLOR);
-	}
-
-	/**
-	 * Returns the icon, created from an image with the specified name,
-	 * and of specified size and color.
-	 *
-	 * @param filename the name of the icon
-	 * @param size     the size of the icon
-	 * @param color    the color of the icon
-	 * @return an {@link ImageIcon} of the image with the specified name
-	 * @throws IOException if an I/O error occurs
-	 */
-	private ImageIcon getIcon(String filename, int size, Color color) throws IOException {
-		BufferedImage im = loadImage(filename);
-		if (im == null) return null;
-
-		im = Util.colorImage(im, color);
-		return new ImageIcon(Scalr.resize(im, size));
-	}
-
-	/**
-	 * Reads the image from the provided path and returns it as a
-	 * buffered image.
-	 *
-	 * @param filename a path to the image file
-	 * @return an image, or {@code null} if the image could not have
-	 * been read
-	 * @throws IOException if an I/O error occurs
-	 */
-	private BufferedImage loadImage(String filename) throws IOException {
-		URL url = classloader.getResource(filename);
-		return url != null ? ImageIO.read(url) : null;
+		return Util.getIcon(filename, DEFAULT_ICON_SIZE, DEFAULT_ICON_COLOR);
 	}
 
 	/**
