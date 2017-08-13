@@ -5,6 +5,7 @@ import chupox.buffon.util.Util;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -106,8 +107,16 @@ public class ImageButton extends JButton {
 		setContentAreaFilled(false);
 
 		addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				updateColor(IconColors.DARK);
+			}
+
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				updateColor(IconColors.DEFAULT);
+
 				if (isDefault) defaultAction.run();
 				else selectedAction.run();
 
@@ -117,14 +126,33 @@ public class ImageButton extends JButton {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				BufferedImage im = (BufferedImage) ((ImageIcon) getIcon()).getImage();
-				setIcon(new ImageIcon(Util.colorImage(im, Controls.DEFAULT_ICON_COLOR.darker())));
+				updateColor(IconColors.DARKER);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				updateColor(IconColors.DEFAULT);
+			}
+
+			/**
+			 * Updates the icon's color to one of the {@link IconColors}
+			 * values.
+			 *
+			 * @param color an enum value of the color
+			 */
+			private void updateColor(IconColors color) {
 				BufferedImage im = (BufferedImage) ((ImageIcon) getIcon()).getImage();
-				setIcon(new ImageIcon(Util.colorImage(im, Controls.DEFAULT_ICON_COLOR)));
+
+				Color c = Controls.DEFAULT_ICON_COLOR;
+				switch (color) {
+					case DARKER:
+						c = c.darker();
+						break;
+					case DARK:
+						c = c.darker().darker();
+						break;
+				}
+				setIcon(new ImageIcon(Util.colorImage(im, c)));
 			}
 		});
 	}
