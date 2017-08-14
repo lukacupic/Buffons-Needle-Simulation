@@ -3,17 +3,21 @@ package chupox.buffon;
 import chupox.buffon.components.canvas.Canvas;
 import chupox.buffon.components.controls.Controls;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
 
 /**
  * A simple simulator of the Buffon's needle problem.
  */
-public class Main extends JFrame {
+public class Main extends JFrame implements IUpdateListener {
 
 	/**
 	 * Width and height of the main window.
@@ -30,20 +34,13 @@ public class Main extends JFrame {
 	 */
 	private static Controls controls = new Controls();
 
-	/**
-	 * A landed needle thrownCounter.
-	 */
-	private int countLanded = 0;
+	private String thrownCountPrefix = "Thrown: ";
+	private String hitCountPrefix = "Hit: ";
+	private String piPrefix = "π ≈ ";
 
-	/**
-	 * The total number of needles thrown.
-	 */
-	private JLabel thrownCounter = new JLabel("Thrown count: 0");
-
-	/**
-	 * The number of needles landed on a line.
-	 */
-	private JLabel landedCounter = new JLabel("Hit count: 0");
+	private JLabel thrownCountLabel = new JLabel(thrownCountPrefix + "0");
+	private JLabel hitCountLabel = new JLabel(hitCountPrefix + "0");
+	private JLabel piLabel = new JLabel(piPrefix + "-");
 
 	/**
 	 * The default constructor.
@@ -73,23 +70,39 @@ public class Main extends JFrame {
 	 */
 	private void initGUI() {
 		setLayout(new BorderLayout());
-		try {
-			//setLookAndFeel("Nimbus");
-		} catch (Exception ignorable) {
-		}
 
+		canvas.addUpdateListener(this);
 		controls.setCanvas(canvas);
 
+		add(createLabelsPanel(), BorderLayout.PAGE_START);
 		add(canvas, BorderLayout.CENTER);
+
 		add(controls, BorderLayout.LINE_END);
 	}
 
-	private void setLookAndFeel(String name) throws Exception {
-		for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-			if (name.equals(info.getName())) {
-				UIManager.setLookAndFeel(info.getClassName());
-				break;
-			}
-		}
+	private JPanel createLabelsPanel() {
+		JPanel panel = new JPanel(new GridLayout(1, 3));
+		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
+		panel.add(thrownCountLabel);
+		panel.add(hitCountLabel);
+		panel.add(piLabel);
+
+		thrownCountLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		hitCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		piLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+
+		return panel;
+	}
+
+	// IUpdateListener methods
+
+	@Override
+	public void update(IUpdateProvider provider) {
+		Canvas c = (Canvas) provider; // the provider is always the canvas
+
+		thrownCountLabel.setText(thrownCountPrefix + c.getThrownCount());
+		hitCountLabel.setText(hitCountPrefix + c.getHitCount());
+		piLabel.setText(piPrefix + c.getPI());
 	}
 }

@@ -1,7 +1,10 @@
 package chupox.buffon.components.canvas;
 
+import chupox.buffon.IUpdateListener;
+import chupox.buffon.IUpdateProvider;
 import chupox.buffon.model.Needle;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 import java.awt.BasicStroke;
@@ -15,12 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Canvas extends JComponent {
+public class Canvas extends JComponent implements IUpdateProvider {
 
 	/**
 	 * The number of lines on the canvas.
 	 */
 	public static int NUMBER_OF_LINES = 5;
+
+	/**
+	 * The number of decimal places to round the π to.
+	 */
+	public static int NUMBER_OF_DIGITS = 4;
 
 	/**
 	 * The distance between the lines.
@@ -67,15 +75,15 @@ public class Canvas extends JComponent {
 	/**
 	 * The number of needles which have been thrown on the canvas.
 	 */
-	private int countNeedles;
+	private int thrownCount;
 
 	/**
 	 * The number of needles which have landed on one of the lines.
 	 */
-	private int countLanded;
+	private int hitCount;
 
 	/**
-	 * The approximate value of the number {@code pi}.
+	 * The approximate value of π.
 	 */
 	private double pi;
 
@@ -84,13 +92,23 @@ public class Canvas extends JComponent {
 	 */
 	private int needleLength;
 
+	/**
+	 * The timer for running the animation.
+	 */
 	private Timer animator = new Timer(delay, e -> Canvas.this.repaint());
+
+	/**
+	 * A list of update listeners, waiting to be notified for changes of
+	 * the simulator values.
+	 */
+	private List<IUpdateListener> listeners = new ArrayList<>();
 
 
 	/**
 	 * Creates a new drawing canvas.
 	 */
 	public Canvas() {
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 	}
 
 	/**
@@ -122,7 +140,17 @@ public class Canvas extends JComponent {
 	public void stop() {
 		pause();
 		clearImage();
+		resetValues();
 		repaint();
+	}
+
+	/**
+	 * Resets the current simulator values to their default values.
+	 */
+	private void resetValues() {
+		thrownCount = 0;
+		hitCount = 0;
+		pi = -1;
 	}
 
 	/**
@@ -158,8 +186,15 @@ public class Canvas extends JComponent {
 			g2d.setStroke(temp);
 		}
 		g.drawImage(image, 0, 0, null);
+		notifyListeners();
 	}
 
+	/**
+	 * Returns a new randomly generated needle to be thrown
+	 * onto the canvas.
+	 *
+	 * @return a new randomly generated needle
+	 */
 	private Needle generateNeedle() {
 		int x = Math.abs(rand.nextInt() % this.getWidth());
 		int y = Math.abs(rand.nextInt() % this.getHeight());
@@ -228,15 +263,15 @@ public class Canvas extends JComponent {
 	}
 
 	/**
-	 * Updates the simulation values: {@link #countNeedles}, {@link #countLanded}
+	 * Updates the simulation values: {@link #thrownCount}, {@link #hitCount}
 	 * and {@link #pi}.
 	 *
 	 * @param needle the needle which was just thrown
 	 */
 	private void updateValues(Needle needle) {
-		countNeedles++;
+		thrownCount++;
 		if (landedOnLine(needle)) {
-			countLanded++;
+			hitCount++;
 			pi = calculatePI();
 		}
 	}
@@ -260,10 +295,64 @@ public class Canvas extends JComponent {
 	}
 
 	/**
-	 * Computes a new value of the number {@code pi} and stores
-	 * it into the variable {@link #pi}.
+	 * Computes a new value of π and stores it into the
+	 * variable {@link #pi}.
 	 */
 	private double calculatePI() {
-		return 2 * (double) needleLength / distance * (double) countNeedles / countLanded;
+		return 2 * (double) needleLength / distance * (double) thrownCount / hitCount;
+	}
+
+	/**
+	 * Returns the total number of needles which have been
+	 * thrown onto the canvas.
+	 *
+	 * @return the total number of needles thrown onto the
+	 * canvas
+	 */
+	public int getThrownCount() {
+		return thrownCount;
+	}
+
+	/**
+	 * Returns the number of needles which have landed
+	 * on one of the lines.
+	 *
+	 * @return the number of needles, landed on one of
+	 * the lines in the current animation cycle
+	 */
+	public int getHitCount() {
+		return hitCount;
+	}
+
+
+	/**
+	 * Returns the calculated value of π, rounded to
+	 * {@link #NUMBER_OF_DIGITS} decimal places.
+	 *
+	 * @return the value of π, rounded to {@link #NUMBER_OF_DIGITS}
+	 * decimal places
+	 */
+	public String getPI() {
+		if (Math.abs(pi + 1) < 10E-8) return "-";
+		return String.format("%." + NUMBER_OF_DIGITS + "f", pi);
+	}
+
+	// IUpdateProvider methods
+
+	@Override
+	public void addUpdateListener(IUpdateListener listener) {
+		listeners.add(listener);
+	}
+
+	@Override
+	public void removeUpdateListener(IUpdateListener listener) {
+		listeners.remove(listener);
+	}
+
+	@Override
+	public void notifyListeners() {
+		for (IUpdateListener l : listeners) {
+			l.update(this);
+		}
 	}
 }

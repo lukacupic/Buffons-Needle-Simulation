@@ -4,6 +4,7 @@ import chupox.buffon.components.canvas.Canvas;
 import chupox.buffon.components.controls.buttons.ImageButton;
 import chupox.buffon.util.Util;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -62,6 +63,7 @@ public class Controls extends JPanel {
 	 *                          the object
 	 */
 	public Controls() throws RuntimeException {
+		setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		try {
 			initGUI();
 		} catch (IOException ex) {
