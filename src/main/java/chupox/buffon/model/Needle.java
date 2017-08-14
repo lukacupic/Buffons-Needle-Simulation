@@ -5,15 +5,17 @@ import chupox.buffon.components.canvas.Canvas;
 import java.awt.Color;
 
 /**
- * Represents a single needle object, which will be thrown on
+ * Represents a single needle, which will be thrown on
  * to the canvas.
  */
 public class Needle {
 
 	/**
-	 * Represents the percentage of the distance between
-	 * the lines on the {@link Canvas} which will be used
-	 * as the length of the needle;
+	 * Represents the portion of the distance between the
+	 * lines on the {@link Canvas}.
+	 * This is a value between {@code 0.0} and {@code 1.0}
+	 * (included); for example, a length factor of 0.5 means
+	 * that the needle will be long {@code 0.5 * distance}.
 	 */
 	public static double lengthFactor = 0.5;
 

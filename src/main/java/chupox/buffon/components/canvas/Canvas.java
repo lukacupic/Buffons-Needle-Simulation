@@ -18,6 +18,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A canvas for running and displaying the animation.
+ */
 public class Canvas extends JComponent implements IUpdateProvider {
 
 	/**

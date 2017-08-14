@@ -19,6 +19,10 @@ import java.awt.Insets;
 import java.io.IOException;
 import java.util.Hashtable;
 
+/**
+ * The panel which holds the main controls for managing the
+ * animation.
+ */
 public class Controls extends JPanel {
 
 	/**

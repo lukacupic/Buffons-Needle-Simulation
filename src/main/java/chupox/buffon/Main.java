@@ -34,12 +34,34 @@ public class Main extends JFrame implements IUpdateListener {
 	 */
 	private static Controls controls = new Controls();
 
+	/**
+	 * The prefix text for the 'thrown count' value.
+	 */
 	private String thrownCountPrefix = "Thrown: ";
+
+	/**
+	 * The prefix text for the 'hit count' value.
+	 */
 	private String hitCountPrefix = "Hit: ";
+
+	/**
+	 * The prefix text for the 'pi' value.
+	 */
 	private String piPrefix = "π ≈ ";
 
+	/**
+	 * The label for displaying the 'thrown count' value.
+	 */
 	private JLabel thrownCountLabel = new JLabel(thrownCountPrefix + "0");
+
+	/**
+	 * The label for displaying the 'hit count' value.
+	 */
 	private JLabel hitCountLabel = new JLabel(hitCountPrefix + "0");
+
+	/**
+	 * The label for displaying the 'pi' value.
+	 */
 	private JLabel piLabel = new JLabel(piPrefix + "-");
 
 	/**

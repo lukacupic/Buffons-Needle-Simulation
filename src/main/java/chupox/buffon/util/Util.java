@@ -10,6 +10,10 @@ import java.awt.image.WritableRaster;
 import java.io.IOException;
 import java.net.URL;
 
+/**
+ * Holds several utility methods for performing some
+ * common tasks.
+ */
 public class Util {
 
 	/**
