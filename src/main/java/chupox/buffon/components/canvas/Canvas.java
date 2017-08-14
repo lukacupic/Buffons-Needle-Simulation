@@ -1,7 +1,7 @@
 package chupox.buffon.components.canvas;
 
-import chupox.buffon.IUpdateListener;
-import chupox.buffon.IUpdateProvider;
+import chupox.buffon.components.canvas.update.IUpdateListener;
+import chupox.buffon.components.canvas.update.IUpdateProvider;
 import chupox.buffon.model.Needle;
 
 import javax.swing.BorderFactory;

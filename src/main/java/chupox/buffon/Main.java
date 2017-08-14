@@ -1,6 +1,8 @@
 package chupox.buffon;
 
 import chupox.buffon.components.canvas.Canvas;
+import chupox.buffon.components.canvas.update.IUpdateListener;
+import chupox.buffon.components.canvas.update.IUpdateProvider;
 import chupox.buffon.components.controls.Controls;
 
 import javax.swing.BorderFactory;

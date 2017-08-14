@@ -1,4 +1,4 @@
-package chupox.buffon;
+package chupox.buffon.components.canvas.update;
 
 import chupox.buffon.components.canvas.Canvas;
 

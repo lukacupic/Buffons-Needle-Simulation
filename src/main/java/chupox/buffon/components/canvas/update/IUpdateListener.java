@@ -1,4 +1,4 @@
-package chupox.buffon;
+package chupox.buffon.components.canvas.update;
 
 /**
  * A listener for changes of the simulator values.
