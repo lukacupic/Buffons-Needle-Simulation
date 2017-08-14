@@ -1,7 +1,11 @@
 # Buffons-Needle-Simulation
-A simple simulator of the [Buffon's needle problem](https://en.wikipedia.org/wiki/Buffon%27s_needle).
+A simple simulator of the [Buffon's needle problem](https://en.wikipedia.org/wiki/Buffon%27s_needle) for approximating the number π.
 
-The simulator generates a needle by randomly obtaining a position on the canvas and the angle of the needle. Using a Monte Carlo method, 
-the simulator then throws a large number of needles onto the canvas. With every new thrown needle, the simulator takes the number of 
-needles which landed on a line and the number of those which didn't, and plugs them into the formula which then provides an approximation of the 
-number π.
+This simulator uses a [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method) for approximating the number π.
+This is done by generating needles at random positions and with random angles on the canvas, which are then thrown onto the canvas itself.
+
+The simulator counts the total number of needles thrown, and the number of needles which have landed on one of the lines. These two values are then plugged into the formula which provides an approximation of the number π.
+
+![alt Awesome LaTeX equation should be displayed here. Sorry if it isn't](https://latex.codecogs.com/gif.latex?%5Cdpi%7B150%7D%20%5Clarge%20P%5Capprox%20%5Cfrac%7B2l%7D%7Bd%5Cpi%7D)
+
+The formula for approximating the number π. ```l``` represents the length of the needle and ```d``` represents the distance between the lines.
