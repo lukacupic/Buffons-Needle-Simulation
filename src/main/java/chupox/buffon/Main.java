@@ -80,6 +80,11 @@ public class Main extends JFrame implements IUpdateListener {
 		add(controls, BorderLayout.LINE_END);
 	}
 
+	/**
+	 * Creates a panel which holds the simulator values.
+	 *
+	 * @return a panel holding the simulator values
+	 */
 	private JPanel createLabelsPanel() {
 		JPanel panel = new JPanel(new GridLayout(1, 3));
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));

@@ -41,8 +41,14 @@ public class ImageButton extends JButton {
 	 */
 	private String selectedTooltip;
 
+	/**
+	 * The action for the default state of the button.
+	 */
 	private Runnable defaultAction;
 
+	/**
+	 * The action for the selected state of the button.
+	 */
 	private Runnable selectedAction;
 
 	/**

@@ -85,7 +85,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	/**
 	 * The approximate value of π.
 	 */
-	private double pi;
+	private double pi = -1;
 
 	/**
 	 * The length of the needles thrown onto this canvas.
