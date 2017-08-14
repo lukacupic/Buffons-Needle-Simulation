@@ -1,4 +1,4 @@
-# Buffons's Needle Simulation
+# Buffons's Needle Simulator
 A simple simulator of the [Buffon's needle problem](https://en.wikipedia.org/wiki/Buffon%27s_needle) for approximating the number π.
 
 This simulator uses a [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method) for approximating the number π.
