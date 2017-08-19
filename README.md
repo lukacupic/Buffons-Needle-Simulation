@@ -8,4 +8,4 @@ The simulator counts the total number of needles thrown, and the number of needl
 
 ![alt Awesome LaTeX equation should be displayed here. Sorry if it isn't](https://latex.codecogs.com/gif.latex?%5Cdpi%7B150%7D%20%5Clarge%20%5Cpi%3D%5Cfrac%7B2l%7D%7Bd%7D*%5Cfrac%7Bn%7D%7Bh%7D)
 
-The formula for approximating the number π. ```l``` represents the length of the needle and ```d``` represents the distance between the lines. Values ```n``` and ```h``` represent the total number of needles thrown and the number of those landed on a line. These four values are then used in each step of the simulator to approximate π.
+The above formula is used for approximating the number π. ```l``` represents the length of the needle and ```d``` represents the distance between the lines. Values ```n``` and ```h``` represent the total number of needles thrown and the number of those landed on a line. These four values are then used in each step of the simulator to approximate π.
