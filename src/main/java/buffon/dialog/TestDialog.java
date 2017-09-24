@@ -1,6 +1,7 @@
 package buffon.dialog;
 
 import buffon.dialog.options.AbstractDialogOption;
+import buffon.dialog.options.OptionsProvider;
 import buffon.dialog.options.SpinnerDialogOption;
 import buffon.util.SpringUtilities;
 
@@ -64,13 +65,16 @@ public class TestDialog extends JDialog {
 
 	private void initSettingsPanel() {
 		SpinnerDialogOption option1 = new SpinnerDialogOption("Number of lines: ",
-				createJSpinner(5, 3, 20, 1));
+				createJSpinner(5, 3, 20, 1),
+				OptionsProvider.getNoOfLines());
 
 		SpinnerDialogOption option2 = new SpinnerDialogOption("Needle length: ",
-				createJSpinner(50, 0, 100, 1));
+				createJSpinner(50, 0, 100, 1),
+				OptionsProvider.getLengthFactor());
 
 		SpinnerDialogOption option3 = new SpinnerDialogOption("Number of π digits: ",
-				createJSpinner(2, 2, 6, 1));
+				createJSpinner(2, 2, 6, 1),
+				OptionsProvider.getNoOfDigits());
 
 		JPanel panel = createOptionsPanel(option1, option2, option3);
 
