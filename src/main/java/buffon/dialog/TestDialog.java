@@ -1,5 +1,7 @@
 package buffon.dialog;
 
+import buffon.dialog.options.AbstractDialogOption;
+import buffon.dialog.options.SpinnerDialogOption;
 import buffon.util.SpringUtilities;
 
 import javax.swing.JButton;

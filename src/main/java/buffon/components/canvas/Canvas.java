@@ -2,7 +2,7 @@ package buffon.components.canvas;
 
 import buffon.components.canvas.update.IUpdateListener;
 import buffon.components.canvas.update.IUpdateProvider;
-import buffon.dialog.options.IntOptionWrapper;
+import buffon.dialog.options.OptionsProvider;
 import buffon.model.Needle;
 
 import javax.swing.BorderFactory;
@@ -23,28 +23,6 @@ import java.util.Random;
  * A canvas for running and displaying the animation.
  */
 public class Canvas extends JComponent implements IUpdateProvider {
-
-	/**
-	 * The number of lines on the canvas.
-	 */
-	//private int NUMBER_OF_LINES = 5;
-	private IntOptionWrapper noOfLines = new IntOptionWrapper(5);
-
-	/**
-	 * The number of decimal places to round the π to.
-	 */
-	//private int NUMBER_OF_DIGITS = 4;
-	private IntOptionWrapper noOfDigits = new IntOptionWrapper(4);
-
-	/**
-	 * Represents the portion of the distance between the
-	 * lines on the {@link Canvas}.
-	 * This is a value between {@code 0.0} and {@code 1.0}
-	 * (included); for example, a length factor of 0.5 means
-	 * that the needle will be long {@code 0.5 * distance}.
-	 */
-	//private static double lengthFactor = 0.5;
-	private IntOptionWrapper lengthFactor = new IntOptionWrapper(50);
 
 	/**
 	 * The distance between the lines.
@@ -243,7 +221,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 		clearImage();
 
-		needleLength = (int) (lengthFactor.getValue() * distance);
+		needleLength = OptionsProvider.getLengthFactor().getValue() * distance;
 	}
 
 	/**
@@ -256,7 +234,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 		g2d.setColor(Color.BLACK);
 		//drawLines(NUMBER_OF_LINES);
-		drawLines(noOfLines.getValue());
+		drawLines(OptionsProvider.getNoOfLines().getValue());
 	}
 
 	/**
@@ -344,14 +322,14 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 	/**
 	 * Returns the calculated value of π, rounded to the number
-	 * of decimal places wrapped inside {@link #noOfDigits}.
+	 * of decimal places wrapped inside OptionsProvider#getNoOfDigits.
 	 *
 	 * @return the value of π, rounded to a specific number of
 	 * digits.
 	 */
 	public String getPI() {
 		if (Math.abs(pi + 1) < 10E-8) return "-";
-		return String.format("%." + noOfDigits.getValue() + "f", pi);
+		return String.format("%." + OptionsProvider.getNoOfDigits().getValue() + "f", pi);
 	}
 
 	// IUpdateProvider methods

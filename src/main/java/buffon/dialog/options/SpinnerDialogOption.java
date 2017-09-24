@@ -1,4 +1,4 @@
-package buffon.dialog;
+package buffon.dialog.options;
 
 import javax.swing.JSpinner;
 
