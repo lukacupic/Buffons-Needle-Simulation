@@ -1,8 +1,9 @@
-package chupox.buffon.components.canvas;
+package buffon.components.canvas;
 
-import chupox.buffon.components.canvas.update.IUpdateListener;
-import chupox.buffon.components.canvas.update.IUpdateProvider;
-import chupox.buffon.model.Needle;
+import buffon.components.canvas.update.IUpdateListener;
+import buffon.components.canvas.update.IUpdateProvider;
+import buffon.dialog.options.IntOptionWrapper;
+import buffon.model.Needle;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -26,12 +27,24 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	/**
 	 * The number of lines on the canvas.
 	 */
-	public static int NUMBER_OF_LINES = 5;
+	//private int NUMBER_OF_LINES = 5;
+	private IntOptionWrapper noOfLines = new IntOptionWrapper(5);
 
 	/**
 	 * The number of decimal places to round the π to.
 	 */
-	public static int NUMBER_OF_DIGITS = 4;
+	//private int NUMBER_OF_DIGITS = 4;
+	private IntOptionWrapper noOfDigits = new IntOptionWrapper(4);
+
+	/**
+	 * Represents the portion of the distance between the
+	 * lines on the {@link Canvas}.
+	 * This is a value between {@code 0.0} and {@code 1.0}
+	 * (included); for example, a length factor of 0.5 means
+	 * that the needle will be long {@code 0.5 * distance}.
+	 */
+	//private static double lengthFactor = 0.5;
+	private IntOptionWrapper lengthFactor = new IntOptionWrapper(50);
 
 	/**
 	 * The distance between the lines.
@@ -230,7 +243,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 		clearImage();
 
-		needleLength = (int) (Needle.lengthFactor * distance);
+		needleLength = (int) (lengthFactor.getValue() * distance);
 	}
 
 	/**
@@ -242,7 +255,8 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
 
 		g2d.setColor(Color.BLACK);
-		drawLines(NUMBER_OF_LINES);
+		//drawLines(NUMBER_OF_LINES);
+		drawLines(noOfLines.getValue());
 	}
 
 	/**
@@ -329,15 +343,15 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 
 	/**
-	 * Returns the calculated value of π, rounded to
-	 * {@link #NUMBER_OF_DIGITS} decimal places.
+	 * Returns the calculated value of π, rounded to the number
+	 * of decimal places wrapped inside {@link #noOfDigits}.
 	 *
-	 * @return the value of π, rounded to {@link #NUMBER_OF_DIGITS}
-	 * decimal places
+	 * @return the value of π, rounded to a specific number of
+	 * digits.
 	 */
 	public String getPI() {
 		if (Math.abs(pi + 1) < 10E-8) return "-";
-		return String.format("%." + NUMBER_OF_DIGITS + "f", pi);
+		return String.format("%." + noOfDigits.getValue() + "f", pi);
 	}
 
 	// IUpdateProvider methods

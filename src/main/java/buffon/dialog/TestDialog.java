@@ -1,6 +1,6 @@
-package chupox.buffon.dialog;
+package buffon.dialog;
 
-import chupox.buffon.util.SpringUtilities;
+import buffon.util.SpringUtilities;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;

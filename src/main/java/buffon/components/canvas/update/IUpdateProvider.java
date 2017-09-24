@@ -1,6 +1,6 @@
-package chupox.buffon.components.canvas.update;
+package buffon.components.canvas.update;
 
-import chupox.buffon.components.canvas.Canvas;
+import buffon.components.canvas.Canvas;
 
 /**
  * A provider of simulator changes. Any class implementing

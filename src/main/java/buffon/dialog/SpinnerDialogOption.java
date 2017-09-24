@@ -1,4 +1,4 @@
-package chupox.buffon.dialog;
+package buffon.dialog;
 
 import javax.swing.JSpinner;
 

@@ -1,4 +1,4 @@
-package chupox.buffon.components.controls.buttons;
+package buffon.components.controls.buttons;
 
 /**
  * Specifies the color of the button's icon.

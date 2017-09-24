@@ -1,4 +1,4 @@
-package chupox.buffon.util;
+package buffon.util;
 
 import org.imgscalr.Scalr;
 

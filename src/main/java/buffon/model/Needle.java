@@ -1,6 +1,4 @@
-package chupox.buffon.model;
-
-import chupox.buffon.components.canvas.Canvas;
+package buffon.model;
 
 import java.awt.Color;
 
@@ -9,15 +7,6 @@ import java.awt.Color;
  * to the canvas.
  */
 public class Needle {
-
-	/**
-	 * Represents the portion of the distance between the
-	 * lines on the {@link Canvas}.
-	 * This is a value between {@code 0.0} and {@code 1.0}
-	 * (included); for example, a length factor of 0.5 means
-	 * that the needle will be long {@code 0.5 * distance}.
-	 */
-	public static double lengthFactor = 0.5;
 
 	/**
 	 * The x coordinate of the first point.
