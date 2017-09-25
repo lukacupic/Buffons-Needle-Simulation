@@ -10,6 +10,7 @@ import buffon.dialog.options.OptionsProvider;
 import buffon.util.SpringUtilities;
 import buffon.util.Util;
 
+import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,6 +23,7 @@ import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -30,10 +32,20 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TestDialog extends JDialog {
+	private static Map<String, ObjectWrapper> optionsOld = new HashMap<>();
+
+	static {
+		for (Map.Entry<String, ObjectWrapper> entry : OptionsProvider.getOptions().entrySet()) {
+			optionsOld.put(entry.getKey(), new ObjectWrapper(entry.getValue().getValue()));
+		}
+	}
+
 	private JPanel contentPane;
 	private JButton buttonOK;
 	private JButton buttonCancel;
@@ -43,19 +55,15 @@ public class TestDialog extends JDialog {
 	private JPanel aboutPanel;
 	private JPanel warningPanel;
 
-	private static Map<String, ObjectWrapper> optionsOld = new HashMap<>();
-
-	static {
-		for (Map.Entry<String, ObjectWrapper> entry : OptionsProvider.getOptions().entrySet()) {
-			optionsOld.put(entry.getKey(), new ObjectWrapper(entry.getValue().getValue()));
+	public TestDialog() {
+		try {
+			initGUI();
+		} catch (IOException e) {
+			Util.displayErrorDialog();
 		}
 	}
 
-	public TestDialog() {
-		initGUI();
-	}
-
-	private void initGUI() {
+	private void initGUI() throws IOException {
 		setResizable(false);
 		setTitle("Preferences");
 		setContentPane(contentPane);
@@ -154,21 +162,36 @@ public class TestDialog extends JDialog {
 		warningPanel.add(label, BorderLayout.SOUTH);
 	}
 
-	private void initAboutPanel() {
+	private void initAboutPanel() throws IOException {
 		aboutPanel.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 
-		aboutPanel.add(new JLabel(UIManager.getIcon("OptionPane.warningIcon"), JLabel.CENTER), c);
+		aboutPanel.add(new JLabel(Util.getIcon("icons/logo.png", 50), JLabel.CENTER), c);
 
 		c.gridy = 1;
 		c.insets = new Insets(10, 0, 0, 0);
-		JLabel label = new JLabel("Buffon's Problem Simulator v2.0");
+		JLabel label = new JLabel("Buffon's Needle Simulator v" + Main.version);
 		label.setFont(new Font("default", Font.BOLD, 16));
 		aboutPanel.add(label, c);
 
+		JPanel author = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		author.add(new JLabel("Coded by"));
+
+		String text = "<html><font color=\"#000000\"><u>Luka Čupić</u></font></html>";
+		JButton authorButton = new JButton(text);
+		authorButton.setBorder(BorderFactory.createEmptyBorder());
+		authorButton.setContentAreaFilled(false);
+		authorButton.addActionListener(e -> {
+			try {
+				Util.openWebpage(new URL("https://github.com/lukacupic"));
+			} catch (MalformedURLException ex) {
+				Util.displayErrorDialog();
+			}
+		});
+		author.add(authorButton);
+
 		c.gridy = 2;
 		c.insets = new Insets(10, 0, 0, 0);
-		aboutPanel.add(new JLabel("Coded by Luka Čupić"), c);
-
+		aboutPanel.add(author, c);
 	}
 }

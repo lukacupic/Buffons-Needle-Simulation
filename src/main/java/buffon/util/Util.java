@@ -7,9 +7,12 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
@@ -38,6 +41,22 @@ public class Util {
 		if (im == null) return null;
 
 		im = Util.colorImage(im, color);
+		return new ImageIcon(Scalr.resize(im, size));
+	}
+
+	/**
+	 * Returns the icon, created from an image with the specified name
+	 * and of specified size.
+	 *
+	 * @param filename the name of the icon
+	 * @param size     the size of the icon
+	 * @return an {@link ImageIcon} of the image with the specified name
+	 * @throws IOException if an I/O error occurs
+	 */
+	public static ImageIcon getIcon(String filename, int size) throws IOException {
+		BufferedImage im = loadImage(filename);
+		if (im == null) return null;
+
 		return new ImageIcon(Scalr.resize(im, size));
 	}
 
@@ -80,13 +99,34 @@ public class Util {
 		return image;
 	}
 
+	/**
+	 * Displays a generic error message and terminates the application.
+	 */
 	public static void displayErrorDialog() {
-		//custom title, warning icon
 		JOptionPane.showMessageDialog(Main.getMainFrame(),
 				"Sadly, an error has occurred. Please restart the application.",
 				"Sorry :(",
 				JOptionPane.WARNING_MESSAGE
 		);
 		System.exit(1);
+	}
+
+	public static void openWebpage(URL url) {
+		try {
+			openWebpage(url.toURI());
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void openWebpage(URI uri) {
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			try {
+				desktop.browse(uri);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

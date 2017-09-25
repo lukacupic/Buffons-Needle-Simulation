@@ -72,7 +72,7 @@ public class Main extends JFrame implements IUpdateListener {
 
 	private JLabel piLabel = new JLabel(pi);
 
-	private static final double version = 2.0;
+	public static final double version = 2.0;
 
 	/**
 	 * The default constructor.
