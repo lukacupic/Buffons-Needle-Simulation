@@ -22,6 +22,10 @@ import javax.swing.SpringLayout;
 import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -36,7 +40,6 @@ public class TestDialog extends JDialog {
 	private JList list;
 	private JPanel cardPanel;
 	private JPanel settingsPanel;
-	private JPanel appereancePanel;
 	private JPanel aboutPanel;
 	private JPanel warningPanel;
 
@@ -53,6 +56,8 @@ public class TestDialog extends JDialog {
 	}
 
 	private void initGUI() {
+		setResizable(false);
+		setTitle("Preferences");
 		setContentPane(contentPane);
 		setModal(true);
 		getRootPane().setDefaultButton(buttonOK);
@@ -144,12 +149,26 @@ public class TestDialog extends JDialog {
 		warningPanel.setLayout(new BorderLayout());
 
 		Icon icon = UIManager.getIcon("OptionPane.warningIcon");
-		JLabel label = new JLabel("Changing options will cause the simulation to reset!", icon, JLabel.CENTER);
+		JLabel label = new JLabel("Changing the settings will cause the simulation to reset!", icon, JLabel.CENTER);
 
 		warningPanel.add(label, BorderLayout.SOUTH);
-
 	}
 
 	private void initAboutPanel() {
+		aboutPanel.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+
+		aboutPanel.add(new JLabel(UIManager.getIcon("OptionPane.warningIcon"), JLabel.CENTER), c);
+
+		c.gridy = 1;
+		c.insets = new Insets(10, 0, 0, 0);
+		JLabel label = new JLabel("Buffon's Problem Simulator v2.0");
+		label.setFont(new Font("default", Font.BOLD, 16));
+		aboutPanel.add(label, c);
+
+		c.gridy = 2;
+		c.insets = new Insets(10, 0, 0, 0);
+		aboutPanel.add(new JLabel("Coded by Luka Čupić"), c);
+
 	}
 }

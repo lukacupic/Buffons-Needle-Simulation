@@ -54,19 +54,23 @@ public class Main extends JFrame implements IUpdateListener {
 	private String piPrefix = "π ≈ ";
 
 	/**
-	 * The label for displaying the 'thrown count' value.
+	 * The text for displaying the 'thrown count' value.
 	 */
-	private JLabel thrownCountLabel = new JLabel(thrownCountPrefix + "0");
+	private String thrownCount = thrownCountPrefix + "0";
 
 	/**
-	 * The label for displaying the 'hit count' value.
+	 * The text for displaying the 'hit count' value.
 	 */
-	private JLabel hitCountLabel = new JLabel(hitCountPrefix + "0");
+	private String hitCount = hitCountPrefix + "0";
 
 	/**
-	 * The label for displaying the 'pi' value.
+	 * The text for displaying the 'pi' value.
 	 */
-	private JLabel piLabel = new JLabel(piPrefix + "-");
+	private String pi = piPrefix + "-";
+
+	private JLabel valuesLabel = new JLabel(thrownCount + " | " + hitCount);
+
+	private JLabel piLabel = new JLabel(pi);
 
 	private static final double version = 2.0;
 
@@ -115,15 +119,13 @@ public class Main extends JFrame implements IUpdateListener {
 	 * @return a panel holding the simulator values
 	 */
 	private JPanel createLabelsPanel() {
-		JPanel panel = new JPanel(new GridLayout(1, 3));
+		JPanel panel = new JPanel(new GridLayout(1, 2));
 		panel.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 
-		panel.add(thrownCountLabel);
-		panel.add(hitCountLabel);
+		panel.add(valuesLabel);
 		panel.add(piLabel);
 
-		thrownCountLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		hitCountLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		valuesLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		piLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 
 		return panel;
@@ -135,8 +137,9 @@ public class Main extends JFrame implements IUpdateListener {
 	public void update(IUpdateProvider provider) {
 		Canvas c = (Canvas) provider; // the provider is always the canvas
 
-		thrownCountLabel.setText(thrownCountPrefix + c.getThrownCount());
-		hitCountLabel.setText(hitCountPrefix + c.getHitCount());
+		String thrownCountText = thrownCountPrefix + c.getThrownCount();
+		String hitCountText = hitCountPrefix + c.getHitCount();
+		valuesLabel.setText(thrownCountText + " | " + hitCountText);
 		piLabel.setText(piPrefix + c.getPI());
 	}
 
