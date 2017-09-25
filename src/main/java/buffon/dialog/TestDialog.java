@@ -1,6 +1,8 @@
 package buffon.dialog;
 
+import buffon.Main;
 import buffon.dialog.options.AbstractDialogOption;
+import buffon.dialog.options.IntOptionWrapper;
 import buffon.dialog.options.OptionsProvider;
 import buffon.dialog.options.SpinnerDialogOption;
 import buffon.util.SpringUtilities;
@@ -16,12 +18,13 @@ import javax.swing.KeyStroke;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
-import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TestDialog extends JDialog {
 	private JPanel contentPane;
@@ -31,6 +34,14 @@ public class TestDialog extends JDialog {
 	private JPanel cardPanel;
 	private JPanel settingsPanel;
 	private JPanel appereancePanel;
+
+	private static Map<String, IntOptionWrapper> optionsOld = new HashMap<>();
+
+	static {
+		for (Map.Entry<String, IntOptionWrapper> entry : OptionsProvider.getOptions().entrySet()) {
+			optionsOld.put(entry.getKey(), new IntOptionWrapper(entry.getValue().getValue()));
+		}
+	}
 
 	public TestDialog() {
 		initGUI();
@@ -64,19 +75,25 @@ public class TestDialog extends JDialog {
 	}
 
 	private void initSettingsPanel() {
-		SpinnerDialogOption option1 = new SpinnerDialogOption("Number of lines: ",
-				createJSpinner(5, 3, 20, 1),
-				OptionsProvider.getNoOfLines());
+		IntOptionWrapper wrapper = OptionsProvider.getOption("noOfLines");
+		SpinnerDialogOption noOfLines = new SpinnerDialogOption("Number of lines: ",
+				createJSpinner(wrapper.getValue(), 3, 20, 1),
+				wrapper
+		);
 
-		SpinnerDialogOption option2 = new SpinnerDialogOption("Needle length: ",
-				createJSpinner(50, 0, 100, 1),
-				OptionsProvider.getLengthFactor());
+		wrapper = OptionsProvider.getOption("lengthFactor");
+		SpinnerDialogOption needleLength = new SpinnerDialogOption("Needle length factor: ",
+				createJSpinner(wrapper.getValue(), 0, 100, 1),
+				wrapper
+		);
 
-		SpinnerDialogOption option3 = new SpinnerDialogOption("Number of π digits: ",
-				createJSpinner(2, 2, 6, 1),
-				OptionsProvider.getNoOfDigits());
+		wrapper = OptionsProvider.getOption("noOfDigits");
+		SpinnerDialogOption noOfDigits = new SpinnerDialogOption("Number of π digits: ",
+				createJSpinner(wrapper.getValue(), 2, 6, 1),
+				wrapper
+		);
 
-		JPanel panel = createOptionsPanel(option1, option2, option3);
+		JPanel panel = createOptionsPanel(noOfLines, needleLength, noOfDigits);
 
 		settingsPanel.setLayout(new BorderLayout());
 		settingsPanel.add(panel, BorderLayout.NORTH);
@@ -102,25 +119,12 @@ public class TestDialog extends JDialog {
 	}
 
 	private void onOK() {
-		// add your code here
+		Main.getCanvas().resetContext();
 		dispose();
 	}
 
 	private void onCancel() {
-		// add your code here if necessary
+		OptionsProvider.setOptions(optionsOld);
 		dispose();
-	}
-
-	public static void main(String[] args) {
-		TestDialog dialog = new TestDialog();
-
-		try {
-			UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-		} catch (Exception ignorable) {
-		}
-
-		dialog.pack();
-		dialog.setVisible(true);
-		System.exit(0);
 	}
 }

@@ -27,7 +27,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	/**
 	 * The distance between the lines.
 	 */
-	private int distance;
+	private double distance;
 
 	/**
 	 * The coordinates to check against when a needle is thrown.
@@ -133,15 +133,22 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	 */
 	public void stop() {
 		pause();
+		resetContext();
+	}
+
+	/**
+	 * Clears the canvas and resets the simulator values.
+	 */
+	public void resetContext() {
 		clearImage();
-		resetValues();
+		resetSimulatorValues();
 		repaint();
 	}
 
 	/**
 	 * Resets the current simulator values to their default values.
 	 */
-	private void resetValues() {
+	private void resetSimulatorValues() {
 		thrownCount = 0;
 		hitCount = 0;
 		pi = -1;
@@ -221,7 +228,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 		clearImage();
 
-		needleLength = OptionsProvider.getLengthFactor().getValue() * distance;
+		needleLength = (int) (OptionsProvider.getOption("lengthFactor").getValue() * distance);
 	}
 
 	/**
@@ -233,26 +240,24 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
 
 		g2d.setColor(Color.BLACK);
-		//drawLines(NUMBER_OF_LINES);
-		drawLines(OptionsProvider.getNoOfLines().getValue());
+		drawLines(OptionsProvider.getOption("noOfLines").getValue());
 	}
 
 	/**
-	 * Draws a specified number of equally placed lines on the given
-	 * graphics object.
+	 * Draws a specified number of equally placed lines.
 	 *
 	 * @param n the number of lines to draw
 	 */
 	private void drawLines(int n) {
 		if (n < 2) throw new IllegalArgumentException();
 
-		distance = this.getWidth() / (n - 1);
+		distance = (double) this.getWidth() / (n - 1);
 
-		int currentDistance = 0;
+		double currentDistance = 0;
 		for (int i = 0; i < n; i++) {
-			lineCoordinates.add(currentDistance);
+			lineCoordinates.add((int) currentDistance);
 
-			g2d.drawLine(currentDistance, 0, currentDistance, this.getHeight());
+			g2d.drawLine((int) currentDistance, 0, (int) currentDistance, this.getHeight());
 			currentDistance += distance;
 		}
 	}
@@ -329,7 +334,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	 */
 	public String getPI() {
 		if (Math.abs(pi + 1) < 10E-8) return "-";
-		return String.format("%." + OptionsProvider.getNoOfDigits().getValue() + "f", pi);
+		return String.format("%." + OptionsProvider.getOption("noOfDigits").getValue() + "f", pi);
 	}
 
 	// IUpdateProvider methods

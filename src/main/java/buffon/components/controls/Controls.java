@@ -1,7 +1,9 @@
 package buffon.components.controls;
 
+import buffon.Main;
 import buffon.components.canvas.Canvas;
 import buffon.components.controls.buttons.ImageButton;
+import buffon.dialog.TestDialog;
 import buffon.util.Util;
 
 import javax.swing.BorderFactory;
@@ -9,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
+import javax.swing.SwingUtilities;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
 import java.awt.Component;
@@ -220,7 +223,12 @@ public class Controls extends JPanel {
 		ImageIcon settingsIcon = getIcon("icons/settings.png");
 
 		settingsButton = new ImageButton(settingsIcon, "Settings", () -> {
-			// show settings window
+			TestDialog dialog = new TestDialog();
+			SwingUtilities.invokeLater(() -> {
+				dialog.pack();
+				dialog.setLocationRelativeTo(Main.getMainFrame());
+				dialog.setVisible(true);
+			});
 		});
 		return settingsButton;
 	}

@@ -36,6 +36,8 @@ public class Main extends JFrame implements IUpdateListener {
 	 */
 	private static Controls controls = new Controls();
 
+	private static JFrame mainFrame;
+
 	/**
 	 * The prefix text for the 'thrown count' value.
 	 */
@@ -70,6 +72,7 @@ public class Main extends JFrame implements IUpdateListener {
 	 * The default constructor.
 	 */
 	public Main() {
+		mainFrame = this;
 		setSize(SIZE, SIZE);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
@@ -133,5 +136,16 @@ public class Main extends JFrame implements IUpdateListener {
 		thrownCountLabel.setText(thrownCountPrefix + c.getThrownCount());
 		hitCountLabel.setText(hitCountPrefix + c.getHitCount());
 		piLabel.setText(piPrefix + c.getPI());
+	}
+
+	// Getters
+
+
+	public static Canvas getCanvas() {
+		return canvas;
+	}
+
+	public static JFrame getMainFrame() {
+		return mainFrame;
 	}
 }

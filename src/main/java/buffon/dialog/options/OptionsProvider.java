@@ -1,37 +1,49 @@
 package buffon.dialog.options;
 
-import buffon.components.canvas.Canvas;
+import java.util.HashMap;
+import java.util.Map;
 
 public class OptionsProvider {
 
-	/**
-	 * A wrapper of the number of lines on the canvas.
-	 */
-	private static IntOptionWrapper noOfLines = new IntOptionWrapper(5);
+	private static Map<String, IntOptionWrapper> options = new HashMap<>();
 
-	/**
-	 * A wrapper of the number of decimal places to round the π to.
-	 */
-	private static IntOptionWrapper noOfDigits = new IntOptionWrapper(4);
-
-	/**
-	 * A wrapper of the portion of the distance between the
-	 * lines on the {@link Canvas}.
-	 * This is a value between {@code 0.0} and {@code 1.0}
-	 * (included); for example, a length factor of 0.5 means
-	 * that the needle will be long {@code 0.5 * distance}.
-	 */
-	private static IntOptionWrapper lengthFactor = new IntOptionWrapper(50);
-
-	public static IntOptionWrapper getNoOfLines() {
-		return noOfLines;
+	static {
+		resetOptions();
 	}
 
-	public static IntOptionWrapper getNoOfDigits() {
-		return noOfDigits;
+	public static void resetOptions() {
+		// The number of lines on the canvas
+		resetOption("noOfLines", 5);
+
+		// The number of decimal places to round the π to
+		resetOption("noOfDigits", 2);
+
+		// The portion of the distance between the
+		// lines on the Canvas. This is a value between 0.0 and 1.0
+		// (included); for example, a length factor of 0.5 means
+		// that the needle will be long {@code 0.5 * distance}.
+		resetOption("lengthFactor", 50);
 	}
 
-	public static IntOptionWrapper getLengthFactor() {
-		return lengthFactor;
+	private static void resetOption(String name, int value) {
+		IntOptionWrapper wrapper = options.get(name);
+		if (wrapper == null) {
+			wrapper = new IntOptionWrapper(value);
+			options.put(name, wrapper);
+		} else {
+			wrapper.setValue(value);
+		}
+	}
+
+	public static Map<String, IntOptionWrapper> getOptions() {
+		return options;
+	}
+
+	public static void setOptions(Map<String, IntOptionWrapper> options) {
+		OptionsProvider.options = options;
+	}
+
+	public static IntOptionWrapper getOption(String name) {
+		return options.get(name);
 	}
 }

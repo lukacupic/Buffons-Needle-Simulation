@@ -13,10 +13,7 @@ public class SpinnerDialogOption extends AbstractDialogOption<Integer> {
 		this.spinner = spinner;
 		this.optionWrapper = optionWrapper;
 
-		spinner.addChangeListener(e -> {
-			optionWrapper.setValue(getValue());
-			System.out.println(optionWrapper.getValue());
-		});
+		spinner.addChangeListener(e -> optionWrapper.setValue(getValue()));
 	}
 
 	@Override
