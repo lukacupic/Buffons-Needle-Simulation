@@ -1,9 +1,11 @@
 package buffon.util;
 
+import buffon.Main;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.WritableRaster;
@@ -76,5 +78,15 @@ public class Util {
 			}
 		}
 		return image;
+	}
+
+	public static void displayErrorDialog() {
+		//custom title, warning icon
+		JOptionPane.showMessageDialog(Main.getMainFrame(),
+				"Sadly, an error has occurred. Please restart the application.",
+				"Sorry :(",
+				JOptionPane.WARNING_MESSAGE
+		);
+		System.exit(1);
 	}
 }

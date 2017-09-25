@@ -2,7 +2,7 @@ package buffon.dialog.options;
 
 import javax.swing.JComponent;
 
-public abstract class AbstractDialogOption<T> {
+public abstract class AbstractOption<T> {
 
 	protected String name;
 

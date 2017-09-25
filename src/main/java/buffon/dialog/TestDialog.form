@@ -138,7 +138,7 @@
                       </grid>
                     </children>
                   </grid>
-                  <grid id="4d98a" layout-manager="BorderLayout" hgap="0" vgap="0">
+                  <grid id="4d98a" binding="aboutPanel" layout-manager="BorderLayout" hgap="0" vgap="0">
                     <constraints>
                       <card name="About"/>
                     </constraints>

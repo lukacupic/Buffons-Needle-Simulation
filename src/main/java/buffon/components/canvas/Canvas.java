@@ -160,7 +160,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	 * The slowest speed is 1000 milliseconds (equivalent to speed value
 	 * of 0.0) and the fastest speed (equivalent to 1.0) is the fastest
 	 * possible speed of the animation, but since it's entirely hardware
-	 * dependant, the exact speed cannot be specified in the documentation.
+	 * dependant, it cannot be exactly specified.
 	 *
 	 * @param speed the animation speed, from the interval [0.0, 1.0]
 	 */
@@ -227,8 +227,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		clearImage();
-
-		needleLength = (int) (OptionsProvider.getOption("lengthFactor").getValue() * distance);
+		calculateNeedleLength();
 	}
 
 	/**
@@ -240,7 +239,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
 
 		g2d.setColor(Color.BLACK);
-		drawLines(OptionsProvider.getOption("noOfLines").getValue());
+		drawLines((int) OptionsProvider.getOption(OptionsProvider.NUMBER_OF_LINES).getValue());
 	}
 
 	/**
@@ -260,6 +259,14 @@ public class Canvas extends JComponent implements IUpdateProvider {
 			g2d.drawLine((int) currentDistance, 0, (int) currentDistance, this.getHeight());
 			currentDistance += distance;
 		}
+	}
+
+	/**
+	 * Calculates the length of the needle from the lengthFactor property.
+	 */
+	public void calculateNeedleLength() {
+		double factor = (double) OptionsProvider.getOption(OptionsProvider.LENGTH_FACTOR).getValue();
+		needleLength = ((Double) (factor * distance)).intValue();
 	}
 
 	/**
@@ -334,7 +341,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	 */
 	public String getPI() {
 		if (Math.abs(pi + 1) < 10E-8) return "-";
-		return String.format("%." + OptionsProvider.getOption("noOfDigits").getValue() + "f", pi);
+		return String.format("%." + OptionsProvider.getOption(OptionsProvider.NUMBER_OF_DIGITS).getValue() + "f", pi);
 	}
 
 	// IUpdateProvider methods

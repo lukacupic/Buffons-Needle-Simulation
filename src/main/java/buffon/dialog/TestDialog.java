@@ -1,11 +1,14 @@
 package buffon.dialog;
 
 import buffon.Main;
-import buffon.dialog.options.AbstractDialogOption;
-import buffon.dialog.options.IntOptionWrapper;
+import buffon.components.canvas.Canvas;
+import buffon.dialog.options.AbstractOption;
+import buffon.dialog.options.DoubleSpinnerOption;
+import buffon.dialog.options.IntSpinnerOption;
+import buffon.dialog.options.ObjectWrapper;
 import buffon.dialog.options.OptionsProvider;
-import buffon.dialog.options.SpinnerDialogOption;
 import buffon.util.SpringUtilities;
+import buffon.util.Util;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -13,16 +16,14 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JSpinner;
 import javax.swing.KeyStroke;
-import javax.swing.SpinnerModel;
-import javax.swing.SpinnerNumberModel;
 import javax.swing.SpringLayout;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,12 +35,13 @@ public class TestDialog extends JDialog {
 	private JPanel cardPanel;
 	private JPanel settingsPanel;
 	private JPanel appereancePanel;
+	private JPanel aboutPanel;
 
-	private static Map<String, IntOptionWrapper> optionsOld = new HashMap<>();
+	private static Map<String, ObjectWrapper> optionsOld = new HashMap<>();
 
 	static {
-		for (Map.Entry<String, IntOptionWrapper> entry : OptionsProvider.getOptions().entrySet()) {
-			optionsOld.put(entry.getKey(), new IntOptionWrapper(entry.getValue().getValue()));
+		for (Map.Entry<String, ObjectWrapper> entry : OptionsProvider.getOptions().entrySet()) {
+			optionsOld.put(entry.getKey(), new ObjectWrapper(entry.getValue().getValue()));
 		}
 	}
 
@@ -55,6 +57,8 @@ public class TestDialog extends JDialog {
 		buttonOK.addActionListener(e -> onOK());
 
 		buttonCancel.addActionListener(e -> onCancel());
+
+		list.setSelectedIndex(0);
 
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowAdapter() {
@@ -72,24 +76,26 @@ public class TestDialog extends JDialog {
 		});
 
 		initSettingsPanel();
+
+		initAboutPanel();
 	}
 
 	private void initSettingsPanel() {
-		IntOptionWrapper wrapper = OptionsProvider.getOption("noOfLines");
-		SpinnerDialogOption noOfLines = new SpinnerDialogOption("Number of lines: ",
-				createJSpinner(wrapper.getValue(), 3, 20, 1),
+		ObjectWrapper wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_LINES);
+		IntSpinnerOption noOfLines = new IntSpinnerOption("Number of lines: ",
+				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 3, 20, 1),
 				wrapper
 		);
 
-		wrapper = OptionsProvider.getOption("lengthFactor");
-		SpinnerDialogOption needleLength = new SpinnerDialogOption("Needle length factor: ",
-				createJSpinner(wrapper.getValue(), 0, 100, 1),
+		wrapper = OptionsProvider.getOption(OptionsProvider.LENGTH_FACTOR);
+		DoubleSpinnerOption needleLength = new DoubleSpinnerOption("Needle length factor: ",
+				DoubleSpinnerOption.createJSpinner(((double) wrapper.getValue()), 0.00, 1.00, 0.01),
 				wrapper
 		);
 
-		wrapper = OptionsProvider.getOption("noOfDigits");
-		SpinnerDialogOption noOfDigits = new SpinnerDialogOption("Number of π digits: ",
-				createJSpinner(wrapper.getValue(), 2, 6, 1),
+		wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_DIGITS);
+		IntSpinnerOption noOfDigits = new IntSpinnerOption("Number of π digits: ",
+				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 2, 6, 1),
 				wrapper
 		);
 
@@ -99,10 +105,10 @@ public class TestDialog extends JDialog {
 		settingsPanel.add(panel, BorderLayout.NORTH);
 	}
 
-	private JPanel createOptionsPanel(AbstractDialogOption... options) {
+	private JPanel createOptionsPanel(AbstractOption... options) {
 		JPanel p = new JPanel();
 		p.setLayout(new SpringLayout());
-		for (AbstractDialogOption option : options) {
+		for (AbstractOption option : options) {
 			JLabel l = new JLabel(option.getName(), JLabel.TRAILING);
 			p.add(l);
 
@@ -113,18 +119,24 @@ public class TestDialog extends JDialog {
 		return p;
 	}
 
-	private JSpinner createJSpinner(int value, int min, int max, int stepSize) {
-		SpinnerModel model = new SpinnerNumberModel(value, min, max, stepSize);
-		return new JSpinner(model);
-	}
-
 	private void onOK() {
-		Main.getCanvas().resetContext();
+		Canvas c = Main.getCanvas();
+		c.resetContext();
+		c.calculateNeedleLength();
 		dispose();
+
+		try {
+			OptionsProvider.saveOptions();
+		} catch (IOException e) {
+			Util.displayErrorDialog();
+		}
 	}
 
 	private void onCancel() {
-		OptionsProvider.setOptions(optionsOld);
+		OptionsProvider.setDefaultOptions(optionsOld);
 		dispose();
+	}
+
+	private void initAboutPanel() {
 	}
 }

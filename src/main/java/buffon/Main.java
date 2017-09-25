@@ -68,6 +68,8 @@ public class Main extends JFrame implements IUpdateListener {
 	 */
 	private JLabel piLabel = new JLabel(piPrefix + "-");
 
+	private static final double version = 2.0;
+
 	/**
 	 * The default constructor.
 	 */
@@ -78,7 +80,7 @@ public class Main extends JFrame implements IUpdateListener {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		setResizable(false);
-		setTitle("Buffon's Needle Simulator v2.0");
+		setTitle("Buffon's Needle Simulator v" + version);
 
 		initGUI();
 	}
