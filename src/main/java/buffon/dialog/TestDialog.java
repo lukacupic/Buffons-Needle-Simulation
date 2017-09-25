@@ -10,6 +10,7 @@ import buffon.dialog.options.OptionsProvider;
 import buffon.util.SpringUtilities;
 import buffon.util.Util;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -18,6 +19,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SpringLayout;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.event.KeyEvent;
@@ -36,6 +38,7 @@ public class TestDialog extends JDialog {
 	private JPanel settingsPanel;
 	private JPanel appereancePanel;
 	private JPanel aboutPanel;
+	private JPanel warningPanel;
 
 	private static Map<String, ObjectWrapper> optionsOld = new HashMap<>();
 
@@ -76,7 +79,7 @@ public class TestDialog extends JDialog {
 		});
 
 		initSettingsPanel();
-
+		initWarningPanel();
 		initAboutPanel();
 	}
 
@@ -135,6 +138,16 @@ public class TestDialog extends JDialog {
 	private void onCancel() {
 		OptionsProvider.setDefaultOptions(optionsOld);
 		dispose();
+	}
+
+	private void initWarningPanel() {
+		warningPanel.setLayout(new BorderLayout());
+
+		Icon icon = UIManager.getIcon("OptionPane.warningIcon");
+		JLabel label = new JLabel("Changing options will cause the simulation to reset!", icon, JLabel.CENTER);
+
+		warningPanel.add(label, BorderLayout.SOUTH);
+
 	}
 
 	private void initAboutPanel() {
