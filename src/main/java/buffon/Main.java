@@ -22,6 +22,11 @@ import java.awt.GridLayout;
 public class Main extends JFrame implements IUpdateListener {
 
 	/**
+	 * The application version.
+	 */
+	public static final double version = 1.0;
+
+	/**
 	 * Width and height of the main window.
 	 */
 	private static final int SIZE = 600;
@@ -36,6 +41,9 @@ public class Main extends JFrame implements IUpdateListener {
 	 */
 	private static Controls controls = new Controls();
 
+	/**
+	 * The main frame reference.
+	 */
 	private static JFrame mainFrame;
 
 	/**
@@ -68,11 +76,15 @@ public class Main extends JFrame implements IUpdateListener {
 	 */
 	private String pi = piPrefix + "-";
 
+	/**
+	 * A label for holding the simulator values (thrown and hit count).
+	 */
 	private JLabel valuesLabel = new JLabel(thrownCount + " | " + hitCount);
 
+	/**
+	 * A label for holding the 'pi' value.
+	 */
 	private JLabel piLabel = new JLabel(pi);
-
-	public static final double version = 2.0;
 
 	/**
 	 * The default constructor.
@@ -98,6 +110,16 @@ public class Main extends JFrame implements IUpdateListener {
 		SwingUtilities.invokeLater(Main::new);
 	}
 
+	public static Canvas getCanvas() {
+		return canvas;
+	}
+
+	public static JFrame getMainFrame() {
+		return mainFrame;
+	}
+
+	// IUpdateListener methods
+
 	/**
 	 * Initializes the graphical interface of this frame.
 	 */
@@ -112,6 +134,8 @@ public class Main extends JFrame implements IUpdateListener {
 
 		add(controls, BorderLayout.LINE_END);
 	}
+
+	// Getters
 
 	/**
 	 * Creates a panel which holds the simulator values.
@@ -131,8 +155,6 @@ public class Main extends JFrame implements IUpdateListener {
 		return panel;
 	}
 
-	// IUpdateListener methods
-
 	@Override
 	public void update(IUpdateProvider provider) {
 		Canvas c = (Canvas) provider; // the provider is always the canvas
@@ -141,16 +163,5 @@ public class Main extends JFrame implements IUpdateListener {
 		String hitCountText = hitCountPrefix + c.getHitCount();
 		valuesLabel.setText(thrownCountText + " | " + hitCountText);
 		piLabel.setText(piPrefix + c.getPI());
-	}
-
-	// Getters
-
-
-	public static Canvas getCanvas() {
-		return canvas;
-	}
-
-	public static JFrame getMainFrame() {
-		return mainFrame;
 	}
 }
