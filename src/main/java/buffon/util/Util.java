@@ -100,6 +100,16 @@ public class Util {
 	}
 
 	/**
+	 * Returns the URL of the resource specified by the given filename.
+	 *
+	 * @param filename the filename
+	 * @return the URL of the given resource
+	 */
+	public static URL getResourceURL(String filename) {
+		return classloader.getResource(filename);
+	}
+
+	/**
 	 * Displays a generic error message and terminates the application.
 	 */
 	public static void displayErrorDialog() {

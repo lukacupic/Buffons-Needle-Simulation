@@ -4,8 +4,10 @@ import buffon.components.canvas.Canvas;
 import buffon.components.canvas.update.IUpdateListener;
 import buffon.components.canvas.update.IUpdateProvider;
 import buffon.components.controls.Controls;
+import buffon.util.Util;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -15,6 +17,7 @@ import javax.swing.WindowConstants;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.io.IOException;
 
 /**
  * A simple simulator of the Buffon's needle problem.
@@ -98,7 +101,11 @@ public class Main extends JFrame implements IUpdateListener {
 		setResizable(false);
 		setTitle("Buffon's Needle Simulator v" + version);
 
-		initGUI();
+		try {
+			initGUI();
+		} catch (IOException e) {
+			Util.displayErrorDialog();
+		}
 	}
 
 	/**
@@ -123,7 +130,9 @@ public class Main extends JFrame implements IUpdateListener {
 	/**
 	 * Initializes the graphical interface of this frame.
 	 */
-	private void initGUI() {
+	private void initGUI() throws IOException {
+		setIconImage(new ImageIcon(Util.getResourceURL("icons/logo.png")).getImage());
+
 		setLayout(new BorderLayout());
 
 		canvas.addUpdateListener(this);
