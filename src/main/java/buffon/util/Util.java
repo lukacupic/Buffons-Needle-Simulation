@@ -16,13 +16,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 /**
- * Holds several utility methods for performing some
- * common tasks.
+ * Holds several utility methods for performing some common tasks.
  */
 public class Util {
 
 	/**
-	 * The class loader for loading the image resources.
+	 * The class loader for loading resources.
 	 */
 	private static ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
@@ -121,6 +120,12 @@ public class Util {
 		System.exit(1);
 	}
 
+	/**
+	 * Opens the webpage denoted by the specified URL in the default
+	 * web browser.
+	 *
+	 * @param url the URL of the web page do open
+	 */
 	public static void openWebpage(URL url) {
 		try {
 			openWebpage(url.toURI());
@@ -129,6 +134,12 @@ public class Util {
 		}
 	}
 
+	/**
+	 * Opens the webpage denoted by the specified URI in the default
+	 * web browser.
+	 *
+	 * @param uri the URI of the web page do open
+	 */
 	private static void openWebpage(URI uri) {
 		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {

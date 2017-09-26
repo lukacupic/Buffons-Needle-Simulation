@@ -2,11 +2,10 @@ package buffon.dialog.options;
 
 import buffon.util.Util;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -44,11 +43,8 @@ public class OptionsProvider {
 	}
 
 	private static void loadOptions() throws IOException {
-		InputStream in = null;
-		try {
-			in = new FileInputStream(OPTIONS_FILENAME);
-		} catch (FileNotFoundException ignorable) {
-		}
+		URL resource = Util.getResourceURL(OPTIONS_FILENAME);
+		InputStream in = resource != null ? resource.openStream() : null;
 
 		if (in == null) return;
 
