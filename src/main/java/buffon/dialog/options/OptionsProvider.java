@@ -2,13 +2,11 @@ package buffon.dialog.options;
 
 import buffon.util.Util;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
 
 public class OptionsProvider {
 
@@ -18,7 +16,9 @@ public class OptionsProvider {
 	public static final String NUMBER_OF_DIGITS = "noOfDigits";
 	public static final String LENGTH_FACTOR = "lengthFactor";
 
-	private static final String OPTIONS_FILENAME = "src/main/resources/options.properties";
+	//private static final String OPTIONS_FILENAME = "src/main/resources/options.properties";
+
+	private static Preferences prefs = Preferences.userNodeForPackage(OptionsProvider.class);
 
 	static {
 		try {
@@ -43,28 +43,23 @@ public class OptionsProvider {
 	}
 
 	private static void loadOptions() throws IOException {
-		URL resource = Util.getResourceURL(OPTIONS_FILENAME);
-		InputStream in = resource != null ? resource.openStream() : null;
-
-		if (in == null) return;
-
-		Properties p = new Properties();
-		p.load(in);
-
-		options.put(NUMBER_OF_LINES, new ObjectWrapper(Integer.parseInt(p.getProperty(NUMBER_OF_LINES))));
-		options.put(NUMBER_OF_DIGITS, new ObjectWrapper(Integer.parseInt(p.getProperty(NUMBER_OF_DIGITS))));
-		options.put(LENGTH_FACTOR, new ObjectWrapper(Double.parseDouble(p.getProperty(LENGTH_FACTOR))));
+		try {
+			options.put(NUMBER_OF_LINES, new ObjectWrapper(Integer.parseInt(prefs.get(NUMBER_OF_LINES, ""))));
+			options.put(NUMBER_OF_DIGITS, new ObjectWrapper(Integer.parseInt(prefs.get(NUMBER_OF_DIGITS, ""))));
+			options.put(LENGTH_FACTOR, new ObjectWrapper(Double.parseDouble(prefs.get(LENGTH_FACTOR, ""))));
+		} catch (NumberFormatException ignorable) {
+		}
 	}
 
 	public static void saveOptions() throws IOException {
-		Properties p = new Properties();
 		for (Map.Entry<String, ObjectWrapper> entry : options.entrySet()) {
-			p.setProperty(entry.getKey(), entry.getValue().getValue().toString());
+			prefs.put(entry.getKey(), entry.getValue().getValue().toString());
 		}
-		FileOutputStream os = new FileOutputStream(OPTIONS_FILENAME);
-		p.store(os, null);
-		os.flush();
-		os.close();
+		try {
+			prefs.flush();
+		} catch (BackingStoreException e) {
+			throw new IOException(e);
+		}
 	}
 
 	public static void setDefaultOptions() {
