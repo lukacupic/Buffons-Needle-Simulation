@@ -52,6 +52,14 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	private volatile boolean running = false;
 
 	/**
+	 * A flag indicating whether the 'throwing' option is currently active.
+	 * If this field is 'true', then that means that the user has chosen to
+	 * throw an arbitrary number of needles onto the canvas and that the
+	 * process is still active.
+	 */
+	private volatile boolean throwing = false;
+
+	/**
 	 * The image object holding the graphical context of the canvas.
 	 */
 	private BufferedImage image;
@@ -89,7 +97,12 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	/**
 	 * The timer for running the animation.
 	 */
-	private Timer animator = new Timer(delay, e -> Canvas.this.repaint());
+	private Timer animator = new Timer(delay, e -> repaint());
+
+	/**
+	 * The thrower for throwing a bunch of needles onto the canvas at once.
+	 */
+	private NeedleThrower thrower = new NeedleThrower(this);
 
 	/**
 	 * A list of update listeners, waiting to be notified for changes of
@@ -172,11 +185,21 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		animator.setDelay(delay);
 	}
 
+	/**
+	 * Throws the given number of needles onto the canvas, at once.
+	 *
+	 * @param count the number of needles to throw onto the canvas
+	 */
+	public void throwNeedles(int count) {
+		thrower.setN(count);
+		thrower.start();
+	}
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		if (image == null) init();
 
-		if (running) {
+		if (running || thrower.isThrowing()) {
 			Needle needle = generateNeedle();
 			updateValues(needle);
 

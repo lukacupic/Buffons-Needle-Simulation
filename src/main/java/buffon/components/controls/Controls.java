@@ -8,6 +8,7 @@ import buffon.util.Util;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
@@ -53,6 +54,8 @@ public class Controls extends JPanel {
 	 */
 	private ImageButton stopButton;
 
+	private JButton throwButton;
+
 	/**
 	 * The settings button.
 	 */
@@ -94,8 +97,12 @@ public class Controls extends JPanel {
 		changeConstraints(0, 1, new Insets(10, 0, 10, 0));
 		add(speedPanel, c);
 
+		JPanel throwPanel = createThrowPanel();
+		changeConstraints(0, 2, new Insets(10, 0, 10, 0));
+		add(throwPanel, c);
+
 		JPanel settingsPanel = createSettingsPanel();
-		changeConstraints(0, 2, new Insets(10, 10, 10, 10));
+		changeConstraints(0, 3, new Insets(10, 10, 10, 10));
 		add(settingsPanel, c);
 	}
 
@@ -231,6 +238,22 @@ public class Controls extends JPanel {
 			});
 		});
 		return settingsButton;
+	}
+
+	private JPanel createThrowPanel() {
+		JPanel throwPanel = new JPanel();
+		c = new GridBagConstraints();
+
+		throwButton = createThrowButton();
+		throwPanel.add(throwButton);
+
+		return throwPanel;
+	}
+
+	private JButton createThrowButton() {
+		JButton throwButton = new JButton("Throw Needles");
+		throwButton.addActionListener(l -> canvas.throwNeedles(100));
+		return throwButton;
 	}
 
 	/**
