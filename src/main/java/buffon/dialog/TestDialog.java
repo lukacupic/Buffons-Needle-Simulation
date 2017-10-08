@@ -100,7 +100,7 @@ public class TestDialog extends JDialog {
 		settingsPanel.setLayout(new BorderLayout());
 
 		// init object wrappers
-		ObjectWrapper wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_LINES);
+		ObjectWrapper wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_STRIPS);
 		IntSpinnerOption noOfLines = new IntSpinnerOption("Number of strips: ",
 				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 2, 15, 1),
 				wrapper

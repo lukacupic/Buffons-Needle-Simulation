@@ -12,11 +12,9 @@ public class OptionsProvider {
 
 	private static Map<String, ObjectWrapper> options = new HashMap<>();
 
-	public static final String NUMBER_OF_LINES = "noOfLines";
+	public static final String NUMBER_OF_STRIPS = "noOfStrips";
 	public static final String NUMBER_OF_DIGITS = "noOfDigits";
 	public static final String LENGTH_FACTOR = "lengthFactor";
-
-	//private static final String OPTIONS_FILENAME = "src/main/resources/options.properties";
 
 	private static Preferences prefs = Preferences.userNodeForPackage(OptionsProvider.class);
 
@@ -49,7 +47,7 @@ public class OptionsProvider {
 
 	private static void loadOptions() throws IOException {
 		try {
-			options.put(NUMBER_OF_LINES, new ObjectWrapper(Integer.parseInt(prefs.get(NUMBER_OF_LINES, ""))));
+			options.put(NUMBER_OF_STRIPS, new ObjectWrapper(Integer.parseInt(prefs.get(NUMBER_OF_STRIPS, ""))));
 			options.put(NUMBER_OF_DIGITS, new ObjectWrapper(Integer.parseInt(prefs.get(NUMBER_OF_DIGITS, ""))));
 			options.put(LENGTH_FACTOR, new ObjectWrapper(Double.parseDouble(prefs.get(LENGTH_FACTOR, ""))));
 		} catch (NumberFormatException ignorable) {
@@ -68,8 +66,8 @@ public class OptionsProvider {
 	}
 
 	public static void setDefaultOptions() {
-		// The number of lines on the canvas
-		setOption(NUMBER_OF_LINES, 5);
+		// The number of strips on the canvas
+		setOption(NUMBER_OF_STRIPS, 3);
 
 		// The number of decimal places to round the π to
 		setOption(NUMBER_OF_DIGITS, 2);

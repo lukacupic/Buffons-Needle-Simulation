@@ -239,7 +239,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		g2d.clearRect(0, 0, image.getWidth(), image.getHeight());
 
 		g2d.setColor(Color.BLACK);
-		drawLines((int) OptionsProvider.getOption(OptionsProvider.NUMBER_OF_LINES).getValue());
+		drawLines((int) OptionsProvider.getOption(OptionsProvider.NUMBER_OF_STRIPS).getValue() + 1);
 	}
 
 	/**
