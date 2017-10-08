@@ -18,6 +18,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.IOException;
+import java.lang.instrument.Instrumentation;
 
 /**
  * A simple simulator of the Buffon's needle problem.

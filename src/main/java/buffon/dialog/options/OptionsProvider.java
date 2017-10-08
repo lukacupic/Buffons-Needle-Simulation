@@ -29,6 +29,11 @@ public class OptionsProvider {
 	}
 
 	private static void initOptions() throws IOException {
+		try {
+			prefs.clear();
+		} catch (BackingStoreException e) {
+			e.printStackTrace();
+		}
 		boolean setDefault = true;
 		try {
 			loadOptions();
@@ -96,5 +101,9 @@ public class OptionsProvider {
 
 	public static ObjectWrapper getOption(String name) {
 		return options.get(name);
+	}
+
+	public static Preferences getPrefs() {
+		return prefs;
 	}
 }

@@ -252,6 +252,8 @@ public class Canvas extends JComponent implements IUpdateProvider {
 
 		distance = (double) this.getWidth() / (n - 1);
 
+		lineCoordinates.clear(); // fixes the bug where needles would hit invisible lines
+
 		double currentDistance = 0;
 		for (int i = 0; i < n; i++) {
 			lineCoordinates.add((int) currentDistance);

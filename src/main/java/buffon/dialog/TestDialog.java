@@ -97,9 +97,12 @@ public class TestDialog extends JDialog {
 	}
 
 	private void initSettingsPanel() {
+		settingsPanel.setLayout(new BorderLayout());
+
+		// init object wrappers
 		ObjectWrapper wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_LINES);
-		IntSpinnerOption noOfLines = new IntSpinnerOption("Number of lines: ",
-				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 3, 20, 1),
+		IntSpinnerOption noOfLines = new IntSpinnerOption("Number of strips: ",
+				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 2, 15, 1),
 				wrapper
 		);
 
@@ -111,14 +114,29 @@ public class TestDialog extends JDialog {
 
 		wrapper = OptionsProvider.getOption(OptionsProvider.NUMBER_OF_DIGITS);
 		IntSpinnerOption noOfDigits = new IntSpinnerOption("Number of π digits: ",
-				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 2, 6, 1),
+				IntSpinnerOption.createJSpinner((int) wrapper.getValue(), 0, 6, 1),
 				wrapper
 		);
 
 		JPanel panel = createOptionsPanel(noOfLines, needleLength, noOfDigits);
-
-		settingsPanel.setLayout(new BorderLayout());
 		settingsPanel.add(panel, BorderLayout.NORTH);
+
+
+		// TODO: Init reset button
+		/*
+		JButton resetButton = new JButton("Reset");
+		resetButton.addActionListener(l -> {
+			try {
+				OptionsProvider.getPrefs().clear();
+			} catch (BackingStoreException ignorable) {
+			}
+		});
+
+		JPanel resetPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+		resetPanel.add(resetButton);
+
+		settingsPanel.add(resetPanel, BorderLayout.SOUTH);
+		*/
 	}
 
 	private JPanel createOptionsPanel(AbstractOption... options) {
