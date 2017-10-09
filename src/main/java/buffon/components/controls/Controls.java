@@ -277,6 +277,7 @@ public class Controls extends JPanel {
 			Integer count;
 			try {
 				count = Integer.parseInt(countString);
+				if (count < 0) throw new NumberFormatException();
 			} catch (NumberFormatException ex) {
 				Util.displayErrorDialog("Please, enter a valid number!", "Error");
 				return;
