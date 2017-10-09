@@ -18,7 +18,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.io.IOException;
-import java.lang.instrument.Instrumentation;
 
 /**
  * A simple simulator of the Buffon's needle problem.
@@ -118,10 +117,20 @@ public class Main extends JFrame implements IUpdateListener {
 		SwingUtilities.invokeLater(Main::new);
 	}
 
+	/**
+	 * Returns the current canvas.
+	 *
+	 * @return the canvas
+	 */
 	public static Canvas getCanvas() {
 		return canvas;
 	}
 
+	/**
+	 * Returns the current main frame.
+	 *
+	 * @return the main frame
+	 */
 	public static JFrame getMainFrame() {
 		return mainFrame;
 	}

@@ -38,7 +38,6 @@ public class NeedleThrower {
 	private Timer thrower = new Timer(0, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			System.out.println(new Date());
 			canvas.repaint();
 			if (++counter > n) {
 				throwing = false;
