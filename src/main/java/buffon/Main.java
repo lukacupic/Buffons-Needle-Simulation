@@ -28,7 +28,7 @@ public class Main extends JFrame implements IUpdateListener {
 	/**
 	 * The application version.
 	 */
-	public static final double version = 1.0;
+	public static final double version = 1.1;
 
 	/**
 	 * Width and height of the main window.
