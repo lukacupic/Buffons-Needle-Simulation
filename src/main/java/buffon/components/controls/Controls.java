@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
@@ -54,6 +55,9 @@ public class Controls extends JPanel {
 	 */
 	private ImageButton stopButton;
 
+	/**
+	 * The throw-needles button.
+	 */
 	private JButton throwButton;
 
 	/**
@@ -90,19 +94,19 @@ public class Controls extends JPanel {
 		setLayout(new GridBagLayout());
 
 		JPanel controlsPanel = createControlsPanel();
-		changeConstraints(0, 0, new Insets(10, 10, 10, 10));
+		changeConstraints(0, 0, new Insets(10, 10, 0, 10));
 		add(controlsPanel, c);
 
 		JPanel speedPanel = createSpeedPanel();
-		changeConstraints(0, 1, new Insets(10, 0, 10, 0));
+		changeConstraints(0, 1, new Insets(35, 0, 0, 0));
 		add(speedPanel, c);
 
 		JPanel throwPanel = createThrowPanel();
-		changeConstraints(0, 2, new Insets(10, 0, 10, 0));
+		changeConstraints(0, 2, new Insets(10, 0, 0, 0));
 		add(throwPanel, c);
 
 		JPanel settingsPanel = createSettingsPanel();
-		changeConstraints(0, 3, new Insets(10, 10, 10, 10));
+		changeConstraints(0, 3, new Insets(0, 10, 10, 10));
 		add(settingsPanel, c);
 	}
 
@@ -122,7 +126,7 @@ public class Controls extends JPanel {
 		controls.add(playButton, c);
 
 		stopButton = createStopButton();
-		changeConstraints(0, 1, new Insets(10, 10, 10, 10));
+		changeConstraints(0, 1, new Insets(10, 10, 0, 10));
 		controls.add(stopButton, c);
 
 		return controls;
@@ -138,10 +142,9 @@ public class Controls extends JPanel {
 		ImageIcon playIcon = getIcon("icons/play.png");
 		ImageIcon pauseIcon = getIcon("icons/pause.png");
 
-		ImageButton playButton = new ImageButton(playIcon, pauseIcon, "Play", "Pause",
+		return new ImageButton(playIcon, pauseIcon, "Play", "Pause",
 				() -> canvas.play(), () -> canvas.pause()
 		);
-		return playButton;
 	}
 
 	/**
@@ -153,28 +156,25 @@ public class Controls extends JPanel {
 	private ImageButton createStopButton() throws IOException {
 		ImageIcon stopIcon = getIcon("icons/stop.png");
 
-		ImageButton stopButton = new ImageButton(stopIcon, "Stop", () -> {
+		return new ImageButton(stopIcon, "Stop", () -> {
 			canvas.stop();
 			if (!playButton.isDefault()) {
 				playButton.flip();
 			}
 		});
-		return stopButton;
 	}
 
 	/**
 	 * Creates the panel holding the speed control slider.
 	 *
 	 * @return the panel holding the speed control slider
-	 * @throws IOException if an I/O error occurs
 	 */
 	private JPanel createSpeedPanel() {
 		JPanel speedPanel = new JPanel();
 		c = new GridBagConstraints();
 
 		JSlider slider = createSlider();
-		changeConstraints(0, 2, new Insets(10, 0, 10, 0));
-		c.weighty = 1;
+		changeConstraints(0, 2, new Insets(0, 0, 10, 0));
 		speedPanel.add(slider, c);
 
 		return speedPanel;
@@ -240,19 +240,50 @@ public class Controls extends JPanel {
 		return settingsButton;
 	}
 
+	/**
+	 * Creates the panel which holds the 'Throw button', used for
+	 * throwing a bunch of needles onto the canvas at once.
+	 *
+	 * @return the throw panel
+	 */
 	private JPanel createThrowPanel() {
 		JPanel throwPanel = new JPanel();
 		c = new GridBagConstraints();
 
 		throwButton = createThrowButton();
-		throwPanel.add(throwButton);
+		changeConstraints(0, 1, new Insets(0, 0, 10, 0));
+		c.weighty = 1;
+		throwPanel.add(throwButton, c);
 
 		return throwPanel;
 	}
 
+	/**
+	 * Creates the Throw button - used to throw needles onto the canvas
+	 * at once.
+	 *
+	 * @return the Throw button
+	 */
 	private JButton createThrowButton() {
 		JButton throwButton = new JButton("Throw Needles");
-		throwButton.addActionListener(l -> canvas.throwNeedles(100));
+		throwButton.addActionListener(l -> {
+			String countString = JOptionPane.showInputDialog(
+					Main.getMainFrame(),
+					"How many needles do you wish to throw?",
+					"Throw how many needles?",
+					JOptionPane.PLAIN_MESSAGE
+			);
+
+			Integer count;
+			try {
+				count = Integer.parseInt(countString);
+			} catch (NumberFormatException ex) {
+				Util.displayErrorDialog("Please, enter a valid number!", "Error");
+				return;
+			}
+
+			canvas.throwNeedles(count);
+		});
 		return throwButton;
 	}
 

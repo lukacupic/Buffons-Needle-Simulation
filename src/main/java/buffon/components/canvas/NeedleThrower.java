@@ -3,6 +3,7 @@ package buffon.components.canvas;
 import javax.swing.Timer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Date;
 
 public class NeedleThrower {
 
@@ -29,11 +30,15 @@ public class NeedleThrower {
 	private boolean throwing;
 
 	/**
-	 *
+	 * The timer used to throw the needles. When triggered, it
+	 * will complete the task (of throwing the needles) {@link #n}
+	 * number of times, after which it will stop (until triggered
+	 * again).
 	 */
 	private Timer thrower = new Timer(0, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			System.out.println(new Date());
 			canvas.repaint();
 			if (++counter > n) {
 				throwing = false;
@@ -81,6 +86,12 @@ public class NeedleThrower {
 		this.n = n;
 	}
 
+	/**
+	 * Checks if the needles are currently being thrown.
+	 *
+	 * @return true if and only if the needles are currently
+	 * being thrown
+	 */
 	public boolean isThrowing() {
 		return throwing;
 	}

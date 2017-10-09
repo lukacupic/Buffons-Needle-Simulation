@@ -52,14 +52,6 @@ public class Canvas extends JComponent implements IUpdateProvider {
 	private volatile boolean running = false;
 
 	/**
-	 * A flag indicating whether the 'throwing' option is currently active.
-	 * If this field is 'true', then that means that the user has chosen to
-	 * throw an arbitrary number of needles onto the canvas and that the
-	 * process is still active.
-	 */
-	private volatile boolean throwing = false;
-
-	/**
 	 * The image object holding the graphical context of the canvas.
 	 */
 	private BufferedImage image;
@@ -202,6 +194,7 @@ public class Canvas extends JComponent implements IUpdateProvider {
 		if (running || thrower.isThrowing()) {
 			Needle needle = generateNeedle();
 			updateValues(needle);
+
 
 			Stroke temp = g2d.getStroke();
 			g2d.setStroke(new BasicStroke(1.8f));

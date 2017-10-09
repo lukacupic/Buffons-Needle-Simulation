@@ -112,12 +112,20 @@ public class Util {
 	 * Displays a generic error message and terminates the application.
 	 */
 	public static void displayErrorDialog() {
-		JOptionPane.showMessageDialog(Main.getMainFrame(),
+		displayErrorDialog(
 				"Sadly, an error has occurred. Please restart the application.",
-				"Sorry :(",
-				JOptionPane.WARNING_MESSAGE
+				"Sorry :("
 		);
 		System.exit(1);
+	}
+
+	/**
+	 * Displays a specified error message.
+	 */
+	public static void displayErrorDialog(String message, String title) {
+		JOptionPane.showMessageDialog(Main.getMainFrame(), title, message,
+				JOptionPane.ERROR_MESSAGE
+		);
 	}
 
 	/**
