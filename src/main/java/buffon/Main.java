@@ -98,7 +98,6 @@ public class Main extends JFrame implements IUpdateListener {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setLocationRelativeTo(null);
 		setVisible(true);
-		setResizable(false);
 		setTitle("Buffon's Needle Simulator v" + version);
 
 		try {
