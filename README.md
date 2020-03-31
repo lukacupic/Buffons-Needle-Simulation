@@ -4,7 +4,7 @@ A simple simulator of the [Buffon's needle problem](https://en.wikipedia.org/wik
 The simulator uses a [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method) for approximating π.
 This is done by generating needles at random positions and with random angles, which are then thrown onto the canvas.
 
-![alt The canvas](http://mathworld.wolfram.com/images/eps-gif/BuffonNeedle_700.gif)
+![alt The canvas](https://i.imgur.com/vxFaPfS.png)
 
 In each step, the simulator counts the total number of needles thrown, and the number of needles which have landed on one of the lines. These two values are then plugged into the formula which provides an approximation of π.
 
